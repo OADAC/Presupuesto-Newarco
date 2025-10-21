@@ -1,0 +1,3286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Paleta CUEVA Official */
+            --cueva-navy: #1B2951;
+            --cueva-electric: #00D4AA;
+            --cueva-coral: #FF6B4A;
+            --cueva-amber: #F59E0B;
+            --cueva-sky: #0EA5E9;
+            
+            /* Grises */
+            --gray-900: #0F172A;
+            --gray-800: #1E293B;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-500: #64748B;
+            --gray-400: #94A3B8;
+            --gray-300: #CBD5E1;
+            --gray-200: #E2E8F0;
+            --gray-100: #F1F5F9;
+            --gray-50: #F8FAFC;
+            --white: #FFFFFF;
+            
+            /* Tipografía */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+            
+            /* Efectos */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==================== SPLASH SCREEN ==================== */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-logo {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .splash-symbol {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .splash-circle {
+            width: 150px;
+            height: 150px;
+            border: 4px solid var(--white);
+            border-radius: 50%;
+            position: absolute;
+            animation: splashMorph 6s ease-in-out infinite;
+        }
+
+        .splash-element {
+            position: absolute;
+            border: 2px solid var(--cueva-electric);
+            background: transparent;
+            animation: splashFloat 8s ease-in-out infinite;
+        }
+
+        .splash-hex {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+        .splash-element:nth-child(2) { top: 25px; left: 25px; width: 15px; height: 15px; animation-delay: -1s; border-color: var(--cueva-electric); }
+        .splash-element:nth-child(3) { top: 25px; left: 110px; width: 15px; height: 15px; animation-delay: -2s; border-color: var(--cueva-coral); }
+        .splash-element:nth-child(4) { top: 50px; left: 50px; width: 18px; height: 18px; animation-delay: -3s; border-color: var(--cueva-sky); }
+        .splash-element:nth-child(5) { top: 75px; left: 75px; width: 21px; height: 10px; animation-delay: -4s; border-color: var(--cueva-amber); }
+        .splash-element:nth-child(6) { top: 100px; left: 25px; width: 10px; height: 10px; animation-delay: -5s; border-color: var(--cueva-electric); }
+        .splash-element:nth-child(7) { top: 100px; left: 110px; width: 15px; height: 15px; animation-delay: -6s; border-color: var(--cueva-coral); }
+
+        @keyframes splashMorph {
+            0%, 100% { 
+                border-radius: 50%; 
+                transform: scale(1);
+                border-color: var(--white);
+            }
+            25% { 
+                border-radius: 30% 70% 40% 60%; 
+                transform: scale(1.1);
+                border-color: var(--cueva-electric);
+            }
+            50% { 
+                border-radius: 60% 40% 70% 30%; 
+                transform: scale(0.95);
+                border-color: var(--cueva-coral);
+            }
+            75% { 
+                border-radius: 40% 60% 30% 70%; 
+                transform: scale(1.05);
+                border-color: var(--cueva-sky);
+            }
+        }
+
+        @keyframes splashFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1); 
+                opacity: 1;
+            }
+            25% { 
+                transform: translate(8px, -12px) scale(1.3); 
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translate(-12px, 8px) scale(0.7); 
+                opacity: 0.6;
+            }
+            75% { 
+                transform: translate(4px, 4px) scale(1.1); 
+                opacity: 0.9;
+            }
+        }
+
+        .splash-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .splash-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cueva-electric);
+            margin-bottom: 0.5rem;
+        }
+
+        .splash-tagline {
+            font-size: 1rem;
+            color: var(--gray-300);
+            text-align: center;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .splash-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .splash-progress-bar {
+            height: 100%;
+            background: var(--cueva-electric);
+            border-radius: 2px;
+            animation: loadProgress 3s ease-out forwards;
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* ==================== VIDEO INTRO ==================== */
+        .video-intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 9998;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .video-intro-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .video-intro-overlay.hide {
+            opacity: 0;
+        }
+
+        #intro-video {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .skip-video-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 212, 170, 0.2);
+            color: white;
+            border: 2px solid var(--cueva-electric);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skip-video-btn:hover {
+            background: rgba(0, 212, 170, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* ==================== LOGO ANIMADO HEADER ==================== */
+        .logo-animated {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+        }
+
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--cueva-navy);
+            border-radius: 50%;
+            position: absolute;
+            animation: logoMorph 8s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .logo-animated:hover .logo-circle {
+            animation-duration: 2s;
+        }
+
+        .logo-element {
+            position: absolute;
+            border: 2px solid var(--cueva-electric);
+            background: transparent;
+            animation: logoFloat 10s ease-in-out infinite;
+        }
+
+        .logo-hex {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+        .logo-element:nth-child(2) { top: 12px; left: 12px; width: 9px; height: 9px; animation-delay: -1s; border-color: var(--cueva-electric); }
+        .logo-element:nth-child(3) { top: 12px; left: 39px; width: 9px; height: 9px; animation-delay: -2s; border-color: var(--cueva-coral); }
+        .logo-element:nth-child(4) { top: 25px; left: 25px; width: 12px; height: 12px; animation-delay: -3s; border-color: var(--cueva-sky); }
+        .logo-element:nth-child(5) { top: 35px; left: 35px; width: 15px; height: 7px; animation-delay: -4s; border-color: var(--cueva-amber); }
+        .logo-element:nth-child(6) { top: 42px; left: 12px; width: 6px; height: 6px; animation-delay: -5s; border-color: var(--cueva-electric); }
+        .logo-element:nth-child(7) { top: 42px; left: 39px; width: 9px; height: 9px; animation-delay: -6s; border-color: var(--cueva-coral); }
+
+        @keyframes logoMorph {
+            0%, 100% { 
+                border-radius: 50%; 
+                transform: scale(1);
+                border-color: var(--cueva-navy);
+            }
+            16% { 
+                border-radius: 30% 70% 40% 60%; 
+                transform: scale(1.05);
+                border-color: var(--cueva-electric);
+            }
+            33% { 
+                border-radius: 60% 40% 70% 30%; 
+                transform: scale(0.95);
+                border-color: var(--cueva-coral);
+            }
+            50% { 
+                border-radius: 40% 60% 30% 70%; 
+                transform: scale(1.1);
+                border-color: var(--cueva-sky);
+            }
+            66% { 
+                border-radius: 70% 30% 60% 40%; 
+                transform: scale(0.9);
+                border-color: var(--cueva-amber);
+            }
+            83% { 
+                border-radius: 50% 50% 50% 50%; 
+                transform: scale(1.03);
+                border-color: var(--cueva-electric);
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1); 
+                opacity: 1;
+            }
+            20% { 
+                transform: translate(3px, -5px) scale(1.2); 
+                opacity: 0.8;
+            }
+            40% { 
+                transform: translate(-5px, 3px) scale(0.8); 
+                opacity: 0.6;
+            }
+            60% { 
+                transform: translate(2px, 2px) scale(1.1); 
+                opacity: 0.9;
+            }
+            80% { 
+                transform: translate(-2px, -3px) scale(0.9); 
+                opacity: 0.7;
+            }
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--cueva-navy);
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--cueva-electric);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--cueva-sky);
+            transform: translateY(-1px);
+        }
+
+        .date-info {
+            text-align: right;
+        }
+
+        .date-info p:first-child {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .date-info p:last-child {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin: 0;
+        }
+
+        /* ==================== NAVEGACIÓN ==================== */
+        .nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid transparent;
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            color: var(--gray-800);
+        }
+
+        .nav-item.active {
+            color: var(--cueva-electric);
+            border-bottom-color: var(--cueva-electric);
+        }
+
+        /* ==================== MAIN CONTAINER ==================== */
+        .main-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* ==================== PARTNER LINKS ==================== */
+        .partner-section {
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .partner-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .partner-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-header p {
+            color: var(--gray-300);
+            font-size: 0.875rem;
+        }
+
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .partner-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--white);
+            display: block;
+        }
+
+        .partner-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .partner-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .partner-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--cueva-electric);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .partner-card h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-card p {
+            color: var(--gray-300);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .partner-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--cueva-electric);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .partner-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .partner-tag {
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 212, 170, 0.2);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--cueva-electric);
+        }
+
+        /* ==================== PROJECT INFO ==================== */
+        .project-info {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item p {
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .info-item input {
+            width: 80px;
+            padding: 0.6rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .info-item input:focus {
+            outline: none;
+            border-color: var(--cueva-electric);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+        }
+
+        /* ==================== BUDGET SELECTOR ==================== */
+        .budget-option-selector {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .budget-option-selector h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .client-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .budget-option {
+            padding: 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .budget-option:hover {
+            border-color: var(--gray-300);
+        }
+
+        .budget-option.active {
+            border-color: var(--cueva-electric);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .budget-option.active::before {
+            content: "✓";
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            background: var(--cueva-electric);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .budget-option h4 {
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-option p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .budget-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--cueva-electric);
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-savings {
+            font-size: 0.875rem;
+            color: var(--cueva-coral);
+            font-weight: 600;
+        }
+
+        /* ==================== SUMMARY CARDS ==================== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            border-left: 4px solid var(--cueva-electric);
+        }
+
+        .summary-card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .summary-text h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-text .amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .summary-text .subtitle {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        /* ==================== CHAPTER CARDS ==================== */
+        .chapter-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .chapter-header {
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            color: var(--white);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chapter-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .chapter-total .label {
+            font-size: 0.875rem;
+            color: var(--cueva-electric);
+            opacity: 0.9;
+        }
+
+        .chapter-total .amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* ==================== TABLES ==================== */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--gray-50);
+        }
+
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .partida-codigo {
+            font-weight: 700;
+            color: var(--cueva-navy);
+            min-width: 90px;
+            font-family: var(--font-mono);
+        }
+
+        .partida-desc {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .partida-comment {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            line-height: 1.4;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .input-cantidad, .input-precio {
+            width: 100px;
+            padding: 0.75rem 0.5rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: var(--white);
+            color: var(--gray-900);
+            transition: all 0.2s ease;
+            font-family: var(--font-mono);
+        }
+
+        .input-cantidad:focus, .input-precio:focus {
+            outline: none;
+            border-color: var(--cueva-electric);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+            transform: scale(1.02);
+        }
+
+        .input-cantidad:hover, .input-precio:hover {
+            border-color: var(--cueva-sky);
+        }
+
+        .currency-symbol {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .unit-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--cueva-navy);
+        }
+
+        .partida-total {
+            font-weight: 700;
+            color: var(--cueva-navy);
+            font-size: 0.95rem;
+            padding: 0.5rem;
+            background: rgba(0, 212, 170, 0.05);
+            border-radius: 6px;
+            text-align: center;
+            font-family: var(--font-mono);
+        }
+
+        /* ==================== CONTENT SECTIONS ==================== */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* ==================== COMPARISON SECTION ==================== */
+        .comparison-selector {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-selector h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .comparison-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .comparison-option {
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .comparison-option:hover {
+            border-color: var(--gray-300);
+        }
+
+        .comparison-option.active {
+            border-color: var(--cueva-electric);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .comparison-option h4 {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .comparison-option p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        /* ==================== IMPACT CARDS ==================== */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .impact-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            border-left: 4px solid var(--cueva-electric);
+        }
+
+        .impact-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .impact-icon {
+            width: 32px;
+            height: 32px;
+            font-size: 1.5rem;
+        }
+
+        .impact-value {
+            text-align: right;
+        }
+
+        .impact-value .number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--cueva-electric);
+        }
+
+        .impact-value .unit {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .impact-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .impact-desc {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .progress-bar {
+            margin-top: 0.75rem;
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--cueva-electric);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* ==================== HERO CARD ==================== */
+        .hero-card {
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .hero-content h2 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--cueva-electric);
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cueva-electric);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .hero-icon {
+            text-align: center;
+        }
+
+        .hero-icon-circle {
+            width: 120px;
+            height: 120px;
+            background: var(--cueva-electric);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 4rem;
+            color: var(--white);
+        }
+
+        /* ==================== ECONOMIC ANALYSIS ==================== */
+        .economic-analysis {
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .economic-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .economic-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--cueva-electric);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .economic-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cueva-electric);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--gray-300);
+            font-weight: 500;
+        }
+
+        /* ==================== TECH CARDS ==================== */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+        }
+
+        .tech-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: var(--white);
+        }
+
+        .tech-card h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-card p {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+        }
+
+        .tech-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tech-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-features .icon {
+            width: 16px;
+            height: 16px;
+            color: var(--cueva-electric);
+        }
+
+        /* ==================== CONDITIONS SECTION ==================== */
+        .conditions-section {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .conditions-header {
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            color: var(--white);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .conditions-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .condition-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            color: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .condition-tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .condition-tab.active {
+            background: var(--cueva-electric);
+        }
+
+        .condition-content {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .condition-content.active {
+            display: block;
+        }
+
+        .condition-group {
+            margin-bottom: 2rem;
+        }
+
+        .condition-group h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--cueva-coral);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .condition-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .condition-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            line-height: 1.6;
+        }
+
+        .condition-list li:last-child {
+            border-bottom: none;
+        }
+
+        .condition-number {
+            font-weight: 700;
+            color: var(--cueva-navy);
+            margin-right: 0.5rem;
+        }
+
+        /* ==================== DOWNLOADS SECTION ==================== */
+        .downloads-hero {
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .downloads-hero h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .downloads-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .download-stat {
+            text-align: center;
+        }
+
+        .download-stat .number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--cueva-electric);
+            display: block;
+        }
+
+        .download-stat .label {
+            font-size: 0.875rem;
+            color: var(--gray-300);
+        }
+
+        .downloads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .download-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .download-item:hover {
+            background: var(--gray-100);
+        }
+
+        .download-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .download-icon {
+            width: 24px;
+            height: 24px;
+            font-size: 1.25rem;
+        }
+
+        .download-details h4 {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .download-details p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .download-details .meta {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .btn-download {
+            padding: 0.5rem 1rem;
+            background: var(--cueva-electric);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-download:hover {
+            background: var(--cueva-sky);
+        }
+
+        /* ==================== CONTACT SECTION ==================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .contact-item-text h4 {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-item-text p {
+            color: var(--gray-600);
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--cueva-electric);
+            box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: var(--cueva-electric);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--cueva-sky);
+        }
+
+        /* ==================== NOTIFICATION ==================== */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--cueva-electric);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        
+        /* Tarjetas de clientes con logo */
+        .client-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .client-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            border-left: 4px solid var(--cueva-electric);
+        }
+
+        .client-logo {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .client-info h4 {
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .client-info p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .hidden { display: none !important; }
+        .text-teal { color: var(--cueva-electric); }
+        .text-orange { color: var(--cueva-coral); }
+        .text-green { color: #16A34A; }
+        .text-blue { color: var(--cueva-sky); }
+        .text-purple { color: #7C3AED; }
+        .bg-blue { background: #DBEAFE; }
+        .bg-teal { background: rgba(0, 212, 170, 0.1); }
+        .bg-green { background: #ECFDF5; }
+        .bg-orange { background: #FEF3C7; }
+        .bg-purple { background: #F3E8FF; }
+        .bg-yellow { background: #FFFBEB; }
+        .icon-blue { background: #DBEAFE; color: #2563EB; }
+        .icon-teal { background: rgba(0, 212, 170, 0.1); color: var(--cueva-electric); }
+        .icon-green { background: #D1F7C4; color: #16A34A; }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .splash-symbol {
+                width: 120px;
+                height: 120px;
+            }
+
+            .splash-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .splash-title {
+                font-size: 3rem;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-container {
+                flex-wrap: wrap;
+                gap: 0;
+            }
+
+            .nav-item {
+                flex: 1;
+                justify-content: center;
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .economic-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .downloads-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-cantidad, .input-precio {
+                width: 90px;
+                font-size: 0.8rem;
+            }
+
+            .client-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-options {
+                grid-template-columns: 1fr;
+            }
+
+            .partner-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-logo">
+            <div class="splash-symbol">
+                <div class="splash-circle"></div>
+                <div class="splash-element splash-hex"></div>
+                <div class="splash-element splash-hex"></div>
+                <div class="splash-element"></div>
+                <div class="splash-element"></div>
+                <div class="splash-element"></div>
+                <div class="splash-element splash-hex"></div>
+            </div>
+            <h1 class="splash-title">CUEVA</h1>
+            <p class="splash-subtitle">Sistema Universal de Construcción</p>
+            <p class="splash-tagline">15+ años revolucionando la industria con geometría paramétrica universal que funciona con cualquier material, uso, escala y tecnología</p>
+            <div class="splash-progress">
+                <div class="splash-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Intro Overlay -->
+    <div class="video-intro-overlay" id="videoIntroOverlay">
+        <button class="skip-video-btn" onclick="skipVideo()">
+            <i class="fas fa-times"></i> Saltar
+        </button>
+        <video id="intro-video" autoplay>
+            <source src="Public/intro.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+        </video>
+    </div>
+
+    <!-- Header -->
+    
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-animated">
+                    <div class="logo-circle"></div>
+                    <div class="logo-element logo-hex"></div>
+                    <div class="logo-element logo-hex"></div>
+                    <div class="logo-element"></div>
+                    <div class="logo-element"></div>
+                    <div class="logo-element"></div>
+                    <div class="logo-element logo-hex"></div>
+                </div>
+                <div class="logo-text">
+                    <h1>CUEVA</h1>
+                    <p>Presupuesto Interactivo - Proyecto Torrelodones</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="descargarPresupuesto()">
+                    <i class="fas fa-download"></i>
+                    Exportar PDF
+                </button>
+                <div class="date-info">
+                    <p>Fecha</p>
+                    <p id="currentDate"></p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-item active" data-tab="presupuesto">
+                <i class="fas fa-calculator"></i>
+                Presupuesto
+            </a>
+            <a href="#" class="nav-item" data-tab="impacto">
+                <i class="fas fa-chart-line"></i>
+                Análisis Comparativo
+            </a>
+            <a href="#" class="nav-item" data-tab="propuesta">
+                <i class="fas fa-bolt"></i>
+                Propuesta CUEVA
+            </a>
+            <a href="#" class="nav-item" data-tab="condiciones">
+                <i class="fas fa-file-contract"></i>
+                Condiciones
+            </a>
+            <a href="#" class="nav-item" data-tab="descargas">
+                <i class="fas fa-download"></i>
+                Documentación
+            </a>
+            <a href="#" class="nav-item" data-tab="contacto">
+                <i class="fas fa-envelope"></i>
+                Contacto
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Sección Partners -->
+        <div class="partner-section">
+            <div class="partner-header">
+                <h3>Proyecto Colaborativo</h3>
+                <p>Alianza estratégica entre CUEVA, Newarco y Pentavep</p>
+            </div>
+            <div class="partner-grid">
+                <a href="https://newarco.es/" target="_blank" class="partner-card">
+                    <div class="partner-card-header">
+                        <div class="partner-icon">
+                            <i class="fas fa-drafting-compass"></i>
+                        </div>
+                        <div>
+                            <h4>Newarco Arquitectura</h4>
+                            <p>Estudio de Arquitectura - Cliente del Proyecto</p>
+                        </div>
+                    </div>
+                    <p>Estudio de arquitectura especializado en diseño innovador y sostenible. Líderes en proyectos residenciales de alta calidad en la zona de Madrid.</p>
+                    <div class="partner-features">
+                        <span class="partner-tag">Diseño Arquitectónico</span>
+                        <span class="partner-tag">Proyectos Premium</span>
+                        <span class="partner-tag">Madrid</span>
+                    </div>
+                    <div class="partner-link">
+                        Visitar web <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+
+                <a href="https://www.casaspasivaslauvar.com/" target="_blank" class="partner-card">
+                    <div class="partner-card-header">
+                        <div class="partner-icon">
+                            <i class="fas fa-hard-hat"></i>
+                        </div>
+                        <div>
+                            <h4>Pentavep - Casas Pasivas Lauvar</h4>
+                            <p>Constructora Partner - Ejecución del Proyecto</p>
+                        </div>
+                    </div>
+                    <p>Constructora especializada en casas pasivas y construcción sostenible. Expertos en sistemas constructivos de alta eficiencia energética.</p>
+                    <div class="partner-features">
+                        <span class="partner-tag">Casas Pasivas</span>
+                        <span class="partner-tag">Construcción Sostenible</span>
+                        <span class="partner-tag">Eficiencia A+++</span>
+                    </div>
+                    <div class="partner-link">
+                        Visitar web <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Información del Proyecto -->
+        <div class="project-info">
+            <div class="info-item">
+                <h3>Cliente</h3>
+                <p>Arquitecto Eugenio Muñoz / Newarco</p>
+            </div>
+            <div class="info-item">
+                <h3>Ubicación</h3>
+                <p>Calle del Abeto, 32 - Urb. Los Robles - Torrelodones</p>
+            </div>
+            <div class="info-item">
+                <h3>Empresa</h3>
+                <p>Sierra Elvira, S.L.</p>
+            </div>
+            <div class="info-item">
+                <h3>Unidades</h3>
+                <div>
+                    <input type="number" id="unidades" value="3" min="1" onchange="actualizarTotales()">
+                    <span>viviendas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN PRESUPUESTO -->
+        <div id="presupuesto-section" class="content-section active">
+            <!-- Tarjetas de Cliente -->
+            <div class="client-cards">
+                <div class="client-card">
+                    <img src="https://newarco.com/wp-content/uploads/2024/05/cropped-LOGO-newarco-negro-01.png" alt="Newarco Logo" class="client-logo" onerror="this.style.display='none'">
+                    <div class="client-info">
+                        <h4>NEWARCO</h4>
+                        <p>Arquitectura innovadora y sostenible</p>
+                    </div>
+                </div>
+                <div class="client-card">
+                    <img src="https://www.pentavep.com/wp-content/uploads/2023/04/LOGO_CABECERA_PENTAVEP.png" alt="Pentavep Logo" class="client-logo" onerror="this.style.display='none'">
+                    <div class="client-info">
+                        <h4>PENTAVEP</h4>
+                        <p>Construcción prefabricada y modular</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selector de Opción -->
+            <div class="budget-option-selector">
+                <h3>Selecciona la Opción Constructiva</h3>
+                <div class="budget-options">
+                    <div class="budget-option active" data-option="cueva-total">
+                        <h4>CUEVA Total Reutilizable</h4>
+                        <p>Sistema completo con forjados EDRO reutilizables de última generación</p>
+                        <div class="budget-price" id="price-cueva-total">330.832,93 €</div>
+                        <div class="budget-savings">Sistema 100% reutilizable</div>
+                    </div>
+                    <div class="budget-option" data-option="placa-alveolar">
+                        <h4>CUEVA + Placa Alveolar</h4>
+                        <p>Sistema híbrido optimizado con placas alveolares convencionales</p>
+                        <div class="budget-price" id="price-placa-alveolar">322.235,84 €</div>
+                        <div class="budget-savings">Ahorro: 8.597,09 € por unidad</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen -->
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Total por Unidad</h4>
+                            <p class="amount text-blue" id="totalUnidad">330.832,93 €</p>
+                        </div>
+                        <div class="summary-icon icon-blue">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Total Proyecto</h4>
+                            <p class="amount text-teal" id="totalProyecto">992.326,38 €</p>
+                        </div>
+                        <div class="summary-icon icon-teal">
+                            <i class="fas fa-building"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Plazo Estimado</h4>
+                            <p class="amount text-green">3-4 meses</p>
+                            <p class="subtitle">vs 12 meses tradicional</p>
+                        </div>
+                        <div class="summary-icon icon-green">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capítulo 04 - Estructura -->
+            <div class="chapter-card">
+                <div class="chapter-header">
+                    <h3 class="chapter-title">04 - ESTRUCTURA Y ELEMENTOS PREFABRICADOS</h3>
+                    <div class="chapter-total">
+                        <div class="label">Subtotal</div>
+                        <div class="amount" id="subtotal-04">123.331,17 €</div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Unidad</th>
+                                <th class="text-center">Precio Unit.</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estructura-tbody">
+                            <!-- Contenido dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Capítulo 07 - Cerramientos -->
+            <div class="chapter-card">
+                <div class="chapter-header">
+                    <h3 class="chapter-title">07 - CERRAMIENTOS Y DIVISIONES</h3>
+                    <div class="chapter-total">
+                        <div class="label">Subtotal</div>
+                        <div class="amount" id="subtotal-07">207.444,29 €</div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Unidad</th>
+                                <th class="text-center">Precio Unit.</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="partida-codigo">07.06</td>
+                                <td>
+                                    <div class="partida-desc">FACHADA REUTILIZABLE UNIDIRECCIONAL HORMIGÓN GRIS</div>
+                                    <div class="partida-comment">Fachada unidireccional prefabricada y reutilizable de 14 cm de canto, realizada con una capa de placas EDRO macizas de hormigón armado de 14 cm de canto y dimensiones estándar o derivadas de la estándar (600x300cm, 300x300cm, 300x150cm, 150x150cm) unidas entre sí mediante placas de unión hembra S355 en perfil vertical de medidas estándar (400x400mm, 400x200mm, 200x200mm) y espesor 10 mm colocadas en una cara de la placa EDRO y conectadas a la cara superior de placa EDRO y distribuidas cada 3 metros, con pernos de alta resistencia de 24mm de mm de diámetro y 280mm de longitud total, atornillados con arandela, tuerca y par de apriete controlado de 800N, con luces hasta 6 m y altura libre de planta de hasta 3 m, apoyada directamente.Terminación rugosa tipo Enfoscado en GRIS. El precio incluye el conformado de elementos en taller industrial con medidas estándar o especiales y el montaje en el lugar definitivo de su colocación en obra.</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-cantidad" value="842.24" step="0.01" data-row="0" data-chapter="07">
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="unit-label">m²</span></td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-precio" value="145.00" step="0.01" data-row="0" data-chapter="07">
+                                        <span class="currency-symbol">€</span>
+                                    </div>
+                                </td>
+                                <td class="text-right partida-total" data-total="0">122.124,80 €</td>
+                            </tr>
+                            <tr>
+                                <td class="partida-codigo">07.07</td>
+                                <td>
+                                    <div class="partida-desc">CUANTÍA ACERO CORRUGADO</div>
+                                    <div class="partida-comment">Acero UNE-EN 10080 B 500 SD para armado de refuerzo en panel prefabricado de hormigón.</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-cantidad" value="9327.00" step="0.01" data-row="1" data-chapter="07">
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="unit-label">kg</span></td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-precio" value="1.65" step="0.01" data-row="1" data-chapter="07">
+                                        <span class="currency-symbol">€</span>
+                                    </div>
+                                </td>
+                                <td class="text-right partida-total" data-total="1">15.389,55 €</td>
+                            </tr>
+                            <tr>
+                                <td class="partida-codigo">07.08</td>
+                                <td>
+                                    <div class="partida-desc">MÉNSULA H. GRIS (CANTO 15 / VUELO 10) ARM. 6Ø12 ø8Ø/0,15</div>
+                                    <div class="partida-comment">Ménsula prefabricada realizada en hormigón autocompacto HA/35/AC/20/Ila, color gris, para apoyo de forjado. Medidas 0,15 m de altura y 0,10 m de ancho. Armado compuesto por 6Ø12 y estribos Ø8 cada 0,15 m.</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-cantidad" value="126.00" step="0.01" data-row="2" data-chapter="07">
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="unit-label">Ml</span></td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-precio" value="36.03" step="0.01" data-row="2" data-chapter="07">
+                                        <span class="currency-symbol">€</span>
+                                    </div>
+                                </td>
+                                <td class="text-right partida-total" data-total="2">4.539,15 €</td>
+                            </tr>
+                            <tr>
+                                <td class="partida-codigo">07.09</td>
+                                <td>
+                                    <div class="partida-desc">SELLADO POLIURETANO EXT. SINTEX MS20</div>
+                                    <div class="partida-comment">Sellado de juntas verticales y horizontales entre paneles prefabricados de hormigón, por la cara exterior de los mismos, con sellador mono-componente elastomérico a base de polímero MS.</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-cantidad" value="842.24" step="0.01" data-row="3" data-chapter="07">
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="unit-label">Ml</span></td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-precio" value="5.95" step="0.01" data-row="3" data-chapter="07">
+                                        <span class="currency-symbol">€</span>
+                                    </div>
+                                </td>
+                                <td class="text-right partida-total" data-total="3">5.007,54 €</td>
+                            </tr>
+                            <tr>
+                                <td class="partida-codigo">04.01</td>
+                                <td>
+                                    <div class="partida-desc">SOLADO DE HORMIGÓN REUTILIZABLE, TERMINACIÓN RAYADA + HUECOS DRENAJE</div>
+                                    <div class="partida-comment">Solado prefabricado y reutilizable de 14 cm de canto total, realizado con placas EDRO INFRAESTRUCTURA macizas de hormigón armado de 14 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm). El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero no incluye la capa de hormigón de limpieza ni cimentación.</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-cantidad" value="247.95" step="0.01" data-row="4" data-chapter="07">
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="unit-label">m²</span></td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-precio" value="135.00" step="0.01" data-row="4" data-chapter="07">
+                                        <span class="currency-symbol">€</span>
+                                    </div>
+                                </td>
+                                <td class="text-right partida-total" data-total="4">33.473,25 €</td>
+                            </tr>
+                            <tr>
+                                <td class="partida-codigo">07.10</td>
+                                <td>
+                                    <div class="partida-desc">VALLADO PERIMETRAL ELEMENTOS PREFABRICADOS 120MM</div>
+                                    <div class="partida-comment">Vallado formado por paneles Valla EDRO prefabricados de hormigón armado de 12, de espesor, de ancho estándar (3m o 1,5m) o personalizado de dimensiones derivadas de las estándar, con altura libre de planta de hasta Xm, unidos entre sí mediante placas de unión metálicas ocultas atornilladas ,empotre o vaina de conexión.</div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-cantidad" value="234.00" step="0.01" data-row="5" data-chapter="07">
+                                    </div>
+                                </td>
+                                <td class="text-center"><span class="unit-label">m²</span></td>
+                                <td class="text-center">
+                                    <div class="input-container">
+                                        <input type="number" class="input-precio" value="115.00" step="0.01" data-row="5" data-chapter="07">
+                                        <span class="currency-symbol">€</span>
+                                    </div>
+                                </td>
+                                <td class="text-right partida-total" data-total="5">26.910,00 €</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN ANÁLISIS COMPARATIVO -->
+        <div id="impacto-section" class="content-section">
+            <div class="comparison-selector">
+                <h3>Comparar Sistema CUEVA vs:</h3>
+                <div class="comparison-options">
+                    <div class="comparison-option active" data-comparison="tradicional">
+                        <h4>Construcción Tradicional</h4>
+                        <p>Obra húmeda convencional</p>
+                    </div>
+                    
+                    <div class="comparison-option" data-comparison="modular">
+                        <h4>Casa Modular</h4>
+                        <p>Modular convencional</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <i class="fas fa-clock impact-icon text-orange"></i>
+                        <div class="impact-value">
+                            <p class="number" id="impact-tiempo">8</p>
+                            <p class="unit">meses menos</p>
+                        </div>
+                    </div>
+                    <h4 class="impact-title">Tiempo de Construcción</h4>
+                    <p class="impact-desc">CUEVA: 3.5 meses vs <span id="comparison-type">tradicional</span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-tiempo"></div>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <i class="fas fa-euro-sign impact-icon text-green"></i>
+                        <div class="impact-value">
+                            <p class="number" id="impact-costo">86.000</p>
+                            <p class="unit">€ ahorro</p>
+                        </div>
+                    </div>
+                    <h4 class="impact-title">Ahorro Económico</h4>
+                    <p class="impact-desc">Reducción vs alternativa</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-costo"></div>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <i class="fas fa-leaf impact-icon text-green"></i>
+                        <div class="impact-value">
+                            <p class="number" id="impact-co2">2.4</p>
+                            <p class="unit">ton CO₂</p>
+                        </div>
+                    </div>
+                    <h4 class="impact-title">Huella de Carbono</h4>
+                    <p class="impact-desc">Reducción emisiones</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-co2"></div>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <i class="fas fa-recycle impact-icon text-teal"></i>
+                        <div class="impact-value">
+                            <p class="number">95</p>
+                            <p class="unit">% reutilizable</p>
+                        </div>
+                    </div>
+                    <h4 class="impact-title">Economía Circular</h4>
+                    <p class="impact-desc">Componentes reutilizables</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-grid">
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Eficiencia Energética</h4>
+                            <p class="amount text-blue" id="impact-eficiencia">+75%</p>
+                        </div>
+                        <div class="summary-icon bg-blue">
+                            <i class="fas fa-bolt text-blue"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Reducción Residuos</h4>
+                            <p class="amount text-green" id="impact-residuos">-80%</p>
+                        </div>
+                        <div class="summary-icon bg-green">
+                            <i class="fas fa-trash-alt text-green"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Valor de Reventa</h4>
+                            <p class="amount text-purple" id="impact-reventa">90%</p>
+                        </div>
+                        <div class="summary-icon bg-purple">
+                            <i class="fas fa-chart-line" style="color: #7C3AED;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imagen Decorativa -->
+            <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
+                <img src="Public/Fotos/IMG_4318.PNG" alt="Análisis constructivo" style="width: 100%; height: 300px; object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- SECCIÓN PROPUESTA CUEVA -->
+        <div id="propuesta-section" class="content-section">
+            <div class="hero-card">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <h2>CUEVA</h2>
+                        <p class="hero-subtitle">El Sistema Universal de Construcción con 15+ años probados</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">∞</span>
+                                <span class="stat-label">Materiales Compatible</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">95%</span>
+                                <span class="stat-label">Componentes reutilizables</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">A++</span>
+                                <span class="stat-label">Eficiencia energética</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-icon">
+                        <div class="hero-icon-circle">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--gray-300);">Sistema universal probado</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="economic-analysis">
+                <div class="economic-header">
+                    <div class="economic-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3>Análisis Financiero para Promotoras</h3>
+                        <p style="font-size: 0.875rem; color: var(--gray-300);">Ventajas económicas Sistema CUEVA Universal</p>
+                    </div>
+                </div>
+                
+                <div class="economic-metrics">
+                    <div class="metric-card">
+                        <div class="metric-value" id="roi-fast">8.5x</div>
+                        <div class="metric-label">ROI Acelerado</div>
+                        <p style="font-size: 0.7rem; color: var(--gray-400); margin-top: 0.5rem;">vs 2.1x tradicional</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="cash-flow">-65%</div>
+                        <div class="metric-label">Riesgo Financiero</div>
+                        <p style="font-size: 0.7rem; color: var(--gray-400); margin-top: 0.5rem;">Menor exposición temporal</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="asset-value">+45%</div>
+                        <div class="metric-label">Valorización Activo</div>
+                        <p style="font-size: 0.7rem; color: var(--gray-400); margin-top: 0.5rem;">Tecnología universal</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="cost-savings">36K€</div>
+                        <div class="metric-label">Ahorro Recursos</div>
+                        <p style="font-size: 0.7rem; color: var(--gray-400); margin-top: 0.5rem;">Mano obra + tiempos</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">90%</div>
+                        <div class="metric-label">Valor Residual</div>
+                        <p style="font-size: 0.7rem; color: var(--gray-400); margin-top: 0.5rem;">Componentes universales</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="future-value">+125%</div>
+                        <div class="metric-label">Proyección 10 años</div>
+                        <p style="font-size: 0.7rem; color: var(--gray-400); margin-top: 0.5rem;">Sistema futuro infinito</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-card-icon bg-blue">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Cualquier Material</h3>
+                    <p>15+ años probando compatibilidad universal con cualquier recurso</p>
+                    <ul class="tech-features">
+                        <li><i class="fas fa-check icon"></i> Hormigón, madera, acero</li>
+                        <li><i class="fas fa-check icon"></i> Plásticos reciclados</li>
+                        <li><i class="fas fa-check icon"></i> Materiales futuros</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-icon bg-teal">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <h3>Cualquier Escala</h3>
+                    <p>Desde componente individual hasta ciudades completas</p>
+                    <ul class="tech-features">
+                        <li><i class="fas fa-check icon"></i> Escalabilidad infinita</li>
+                        <li><i class="fas fa-check icon"></i> Sin modificaciones</li>
+                        <li><i class="fas fa-check icon"></i> Sistema universal</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-card-icon" style="background: var(--cueva-coral);">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>Cualquier Tecnología</h3>
+                    <p>Absorbe y potencia toda tecnología emergente</p>
+                    <ul class="tech-features">
+                        <li><i class="fas fa-check icon"></i> IA avanzada integrada</li>
+                        <li><i class="fas fa-check icon"></i> IoT completo</li>
+                        <li><i class="fas fa-check icon"></i> Blockchain certificado</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Visualización del Proyecto -->
+            <div class="tech-card" style="margin-top: 2rem;">
+                <h3><i class="fas fa-images" style="color: var(--cueva-electric); margin-right: 0.5rem;"></i> Proyectos de Referencia</h3>
+                <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Visualización de proyectos con sistema CUEVA</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_4312.PNG" alt="Vista 1" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_4314.PNG" alt="Vista 2" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_4318.PNG" alt="Vista 3" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_4319.PNG" alt="Vista 4" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_E5371.JPG" alt="Renderizado" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" alt="Referencia" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN CONDICIONES -->
+        <div id="condiciones-section" class="content-section">
+            <div class="conditions-section">
+                <div class="conditions-header">
+                    <h3>Condiciones Contractuales</h3>
+                    <div class="conditions-nav">
+                        <button class="condition-tab active" data-condition="generales">Generales</button>
+                        <button class="condition-tab" data-condition="estructura">Estructura</button>
+                        <button class="condition-tab" data-condition="pago">Pago</button>
+                        <button class="condition-tab" data-condition="particulares">Particulares</button>
+                    </div>
+                </div>
+
+                <div class="condition-content active" id="generales-content">
+                    <div class="condition-group">
+                        <h4>Condiciones Generales</h4>
+                        <ul class="condition-list">
+                            <li><span class="condition-number">I.</span> La vigencia de esta oferta se limita a un mes.</li>
+                            <li><span class="condition-number">II.</span> En esta oferta no está incluido el IVA, que se facturará al tipo vigente en cada momento.</li>
+                            <li><span class="condition-number">III.</span> Los precios no contemplan y por tanto serán objeto de revisión global, las subidas extraordinarias de las materias primas, auxiliares, transportes o grúas, entendiendo por subidas extraordinarias aquellas que afectando de manera generalizada al sector superen el 10% en un plazo no superior a 12 meses.</li>
+                            <li><span class="condition-number">IV.</span> Durante el tiempo que dure la obra el cliente ha de disponer en obra suministro de electricidad y agua.</li>
+                            <li><span class="condition-number">V.</span> El presupuesto facilitado es orientativo hasta confirmación definitiva de medidas y tipología. Las modificaciones posteriores a la fecha de la presente oferta serán objeto de revisión y nueva valoración.</li>
+                            <li><span class="condition-number">VI.</span> Los portes están incluidos en el precio.</li>
+                            <li><span class="condition-number">VII.</span> Los medios de elevación para la descarga y colocación están incluidos en el precio, debiendo de realizarse los trabajos de forma continuada. Los tiempos de espera o paralizaciones que se contabilicen por causas ajenas a nuestra empresa, se facturarán a cargo del cliente.</li>
+                            <li><span class="condition-number">VIII.</span> Los materiales contratados abran pasado los controles de calidad pertinentes y dispondrán del marcado CE.</li>
+                            <li><span class="condition-number">IX.</span> Para la realización del montaje la zona de trabajo ha de estar debidamente acondicionada, de forma que puedan acceder vehículos pesados (grúa autopropulsada 90 Tn, camión articulado 3 ejes MMA 24 Tn, etc.) al interior de la obra y a su perímetro con total facilidad, así como estacionar en el caso que fuera necesario.</li>
+                            <li><span class="condition-number">X.</span> No se incluye ocupación ni corte de vía pública, que, en el caso de ser necesario, será por cuenta del cliente.</li>
+                            <li><span class="condition-number">XI.</span> La obra deberá estar preparada para la verificación de la misma, siendo necesario el visto bueno por parte del personal de nuestra empresa, 15 días antes del inicio del montaje.</li>
+                            <li><span class="condition-number">XII.</span> El presupuesto no será de aplicación si no se cumplen los requisitos establecidos en las condiciones generales y específicas. Para dar presupuesto final será necesario concretar todos los detalles relativos al montaje definitivo (emplazamiento de grúa, características de la obra, fases de ejecución, etc.)</li>
+                            <li><span class="condition-number">XIII.</span> El presente presupuesto queda condicionado a la suscripción posterior de contrato entre las partes, sin el cual, no producirá efecto alguno.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="condition-content" id="estructura-content">
+                    <div class="condition-group">
+                        <h4>Condiciones Estructura Horizontal</h4>
+                        <ul class="condition-list">
+                            <li><span class="condition-number">I.</span> En el montaje y colocación de la placa alveolar no está incluido la realización o ejecución in situ de huecos o pasantes, ni relleno de cobijas o similar.</li>
+                            <li><span class="condition-number">II.</span> La apertura de huecos o pasantes se facturará por hora de administración.</li>
+                            <li><span class="condition-number">III.</span> Los cortes longitudinales se facturarán a 15€/m.</li>
+                            <li><span class="condition-number">IV.</span> El suministro de la placa alveolar está considerado sobre camión tráiler sin autodescarga, el tiempo máximo de descarga por camión contemplado en el presupuesto es de 2 horas, a partir de ese tiempo se facturará a 35€/h de espera, siempre que estas, sean por causas ajenas a nuestra empresa.</li>
+                            <li><span class="condition-number">V.</span> En el caso de requerir o necesitar apoyo con banda de neopreno para el apoyo de la placa alveolar, esta se facturará a 7 €/m.</li>
+                            <li><span class="condition-number">VI.</span> Toda la estructura metálica aportada en obra será miniada en fábrica, no siendo objeto de ignifugación o cualquier otro tratamiento similar.</li>
+                        </ul>
+                    </div>
+
+                    <div class="condition-group">
+                        <h4>Condiciones Estructura Vertical</h4>
+                        <ul class="condition-list">
+                            <li><span class="condition-number">I.</span> Los precios están considerados con paneles totalmente lisos, sin ningún tipo de adorno o hendidura (berenjenos, taladros circulares, espadines, etc.), a excepción de las partidas que especifiquen lo contrario.</li>
+                            <li><span class="condition-number">II.</span> Los paneles se fabrican con materias primas naturales (gravas, arenas, etc.) por lo que no se garantiza la uniformidad del tono de color, no siendo esto objeto de reclamación por parte de los mismo.</li>
+                            <li><span class="condition-number">III.</span> No se incluye en el precio del m2 de panel ningún tipo de sistema de anclaje, indicando su precio por kg de acero o en ud de obra correspondiente.</li>
+                            <li><span class="condition-number">IV.</span> Los precios establecidos se aplicarán sobre mediciones reales de obra, las que aparecen en este documento son teóricas. Los huecos dentro del propio panel no son deducibles, y los paneles con recortes se medirán con las dimensiones máximas de su forma rectangular.</li>
+                            <li><span class="condition-number">V.</span> Para la colocación de los paneles, la estructura existente no debe disponer de vuelos ni salientes en niveles superiores al nivel de montaje, de manera que las piezas puedan ser aproximadas y fijadas desde la verticalidad de los medios de elevación previstos, así como apoyo de paneles en la primera hilada.</li>
+                            <li><span class="condition-number">VI.</span> No se incluye en el precio del m2 de panel el sellado de juntas, indicando su precio por separado.</li>
+                            <li><span class="condition-number">VII.</span> No está incluido el retacado con mortero en las zonas inferiores de panel prefabricado.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="condition-content" id="pago-content">
+                    <div class="condition-group">
+                        <h4>Condiciones de Pago</h4>
+                        <ul class="condition-list">
+                            <li><span class="condition-number">I.</span> 30% a la firma del presente presupuesto, por transferencia bancaria a 7 días fecha factura, al número de cuenta indicado en la misma.</li>
+                            <li><span class="condition-number">II.</span> 30% al comienzo de la obra, por transferencia bancaria a 7 días fecha factura, al número de cuenta indicado en la misma.</li>
+                            <li><span class="condition-number">III.</span> 40% mediante certificación de obra, por transferencia bancaria a 7 días fecha factura, al número de cuenta indicado en la misma.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="condition-content" id="particulares-content">
+                    <div class="condition-group">
+                        <h4>Condiciones Particulares del Proyecto</h4>
+                        <ul class="condition-list">
+                            <li><span class="condition-number">1.</span> No se incluye nada relacionado con la cimentación debiendo de estar completamente ejecutada en el momento de la recepción de los muros.</li>
+                            <li><span class="condition-number">2.</span> No se incluye nada relacionado con escaleras ni vuelos o pérgolas exteriores.</li>
+                            <li><span class="condition-number">3.</span> No se incluye ningún tipo de mortero de retracción.</li>
+                        </ul>
+                    </div>
+
+                    <div class="condition-group">
+                        <h4>Se Incluye</h4>
+                        <ul class="condition-list">
+                            <li><span class="condition-number">I.</span> Sellado de juntas exteriores entre paneles.</li>
+                            <li><span class="condition-number">II.</span> Sistemas de anclajes o uniones metálicas entre paneles.</li>
+                            <li><span class="condition-number">III.</span> Transportes de materiales a obra.</li>
+                            <li><span class="condition-number">IV.</span> Medios auxiliares para la descarga y ejecución de la obra.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imagen Decorativa -->
+            <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
+                <img src="Public/Fotos/IMG_4314.PNG" alt="Detalles constructivos" style="width: 100%; height: 300px; object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- SECCIÓN DESCARGAS -->
+        <div id="descargas-section" class="content-section">
+            <div class="downloads-hero">
+                <h3>Resumen Ejecutivo del Proyecto</h3>
+                <div class="downloads-stats">
+                    <div class="download-stat">
+                        <span class="number" id="stat-unidades">3</span>
+                        <span class="label">Viviendas CUEVA</span>
+                    </div>
+                    <div class="download-stat">
+                        <span class="number" id="stat-inversion">992.326€</span>
+                        <span class="label">Inversión Total</span>
+                    </div>
+                    <div class="download-stat">
+                        <span class="number">3-4</span>
+                        <span class="label">Meses Entrega</span>
+                    </div>
+                    <div class="download-stat">
+                        <span class="number">A++</span>
+                        <span class="label">Eficiencia Energética</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>Documentación Técnica y Comercial</h3>
+                <div class="downloads-grid">
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-file-pdf download-icon" style="color: #DC2626;"></i>
+                            <div class="download-details">
+                                <h4>Presupuesto CUEVA Total</h4>
+                                <p>PDF completo sistema reutilizable con forjados EDRO</p>
+                                <p class="meta">Actualizado: <span id="current-date-cueva-total"></span></p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="descargarPresupuestoEspecifico('cueva-total')">Descargar</button>
+                    </div>
+
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-file-pdf download-icon" style="color: #2563EB;"></i>
+                            <div class="download-details">
+                                <h4>Presupuesto CUEVA + Alveolar</h4>
+                                <p>PDF completo sistema híbrido optimizado</p>
+                                <p class="meta">Actualizado: <span id="current-date-alveolar"></span></p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="descargarPresupuestoEspecifico('placa-alveolar')">Descargar</button>
+                    </div>
+
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-chart-line download-icon" style="color: #EAB308;"></i>
+                            <div class="download-details">
+                                <h4>Análisis Comparativo</h4>
+                                <p>Comparación detallada de ambas opciones constructivas</p>
+                                <p class="meta">CUEVA Total vs CUEVA + Alveolar • Ventajas • ROI</p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="exportarComparativo()">Generar</button>
+                    </div>
+
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-book download-icon" style="color: #7C3AED;"></i>
+                            <div class="download-details">
+                                <h4>Catálogo Técnico EDRO V10</h4>
+                                <p>Catálogo completo del sistema constructivo EDRO</p>
+                                <p class="meta">PDF • Especificaciones técnicas completas</p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="descargarDocumento('Public/pdf/CATALOGO TECNICO EDRO V10.pdf')">Descargar</button>
+                    </div>
+
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-tools download-icon" style="color: #F59E0B;"></i>
+                            <div class="download-details">
+                                <h4>Manual de Montaje EDRO V19</h4>
+                                <p>Guía paso a paso para el montaje del sistema</p>
+                                <p class="meta">PDF • Instrucciones detalladas</p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="descargarDocumento('Public/pdf/MANUAL DE MONTAJE EDRO V19.pdf')">Descargar</button>
+                    </div>
+
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-cubes download-icon" style="color: #00D4AA;"></i>
+                            <div class="download-details">
+                                <h4>Componentes Constructivos</h4>
+                                <p>Documentación de componentes industrializados EDRO</p>
+                                <p class="meta">PDF • Catálogo de componentes</p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="descargarDocumento('Public/pdf/EDRO-Componentes-Constructivos-Industrializados.pdf')">Descargar</button>
+                    </div>
+
+                    <div class="download-item">
+                        <div class="download-info">
+                            <i class="fas fa-building download-icon" style="color: #FF6B4A;"></i>
+                            <div class="download-details">
+                                <h4>Panel Fachada Hormigón</h4>
+                                <p>Especificaciones técnicas del panel de fachada</p>
+                                <p class="meta">PDF • Detalles constructivos</p>
+                            </div>
+                        </div>
+                        <button class="btn-download" onclick="descargarDocumento('Public/pdf/Panel-Fachada-Hormigón.pdf')">Descargar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN CONTACTO -->
+        <div id="contacto-section" class="content-section">
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Información de Contacto</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-teal">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Email Corporativo</h4>
+                            <p>luismgarcia@edrosystems.com</p>
+                            <p></p>
+                            <p style="color: var(--gray-500);">Respuesta en menos de 24h</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-blue">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Teléfono Directo</h4>
+                            <p>+34 617 808 692</p>
+                            <p></p>
+                            <p style="color: var(--gray-500);">Lun-Vie: 9:00-19:00h</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-green">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Oficina Central</h4>
+                            <p>Ronda de San Martín, 3</p>
+                            <p>28221 Majadahonda, Madrid</p>
+                            <p style="color: var(--gray-500);">Cita previa</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-purple">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Showroom & Factory</h4>
+                            <p>Polígono Industrial Norte</p>
+                            <p>45678 Toledo</p>
+                            <p style="color: var(--gray-500);">Visitas programadas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3>Solicitar Información</h3>
+                    
+                    <div class="form-grid">
+                        <input type="text" class="form-input" placeholder="Nombre completo" id="contact-name">
+                        <input type="email" class="form-input" placeholder="Email corporativo" id="contact-email">
+                        <input type="tel" class="form-input" placeholder="Teléfono de contacto" id="contact-phone">
+                        <input type="text" class="form-input" placeholder="Empresa / Estudio" id="contact-company">
+                    </div>
+                    
+                    <select class="form-select" id="contact-type" style="margin-bottom: 1rem;">
+                        <option value="">Tipo de consulta</option>
+                        <option value="presupuesto">Solicitar presupuesto personalizado</option>
+                        <option value="visita">Agendar visita al showroom</option>
+                        <option value="presentacion">Presentación comercial</option>
+                        <option value="tecnica">Información técnica detallada</option>
+                        <option value="financiacion">Opciones de financiación</option>
+                    </select>
+
+                    <textarea class="form-textarea" placeholder="Describe tu proyecto: ubicación, número de unidades, timeline, requisitos especiales..." rows="4" id="contact-message" style="margin-bottom: 1rem;"></textarea>
+
+                    <button class="btn-submit" onclick="enviarFormulario()">
+                        <span>Solicitar Información</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Imagen Decorativa -->
+            <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
+                <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" alt="Villa moderna CUEVA" style="width: 100%; height: 350px; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos del presupuesto
+        var presupuestoData = {
+            unidades: 3,
+            opcionActiva: 'cueva-total',
+            opciones: {
+                'cueva-total': {
+                    estructura: [
+                        { codigo: '45661', cantidad: 3259.99, precio: 3.68, total: 11996.76 },
+                        { codigo: '04-002', cantidad: 780.00, precio: 3.68, total: 2870.40 },
+                        { codigo: '4.03', cantidad: 3659.79, precio: 3.68, total: 13468.03 },
+                        { codigo: '4.04', cantidad: 3795.00, precio: 3.68, total: 13965.60 },
+                        { codigo: '04.01', cantidad: 160.57, precio: 155.00, total: 24888.35 },
+                        { codigo: '04.02', cantidad: 321.14, precio: 175.00, total: 56199.50 }
+                    ],
+                    subtotalEstructura: 123388.64,
+                    totalUnidad: 330832.93
+                },
+                'placa-alveolar': {
+                    estructura: [
+                        { codigo: '45661', cantidad: 5259.99, precio: 3.68, total: 19356.76 },
+                        { codigo: '04-002', cantidad: 980.00, precio: 3.68, total: 3606.40 },
+                        { codigo: '4.03', cantidad: 4659.79, precio: 3.68, total: 17148.03 },
+                        { codigo: '4.04', cantidad: 4795.00, precio: 3.68, total: 17645.60 },
+                        { codigo: '04.05', cantidad: 530.71, precio: 97.55, total: 51770.76 },
+                        { codigo: '5.01', cantidad: 2800.00, precio: 1.88, total: 5264.00 }
+                    ],
+                    subtotalEstructura: 114791.55,
+                    totalUnidad: 322235.84
+                }
+            },
+            cerramientos: [
+                { cantidad: 842.24, precio: 145.00, total: 122124.80 },
+                { cantidad: 9327.00, precio: 1.65, total: 15389.55 },
+                { cantidad: 126.00, precio: 36.03, total: 4539.15 },
+                { cantidad: 842.24, precio: 5.95, total: 5007.54 },
+                { cantidad: 247.95, precio: 135.00, total: 33473.25 },
+                { cantidad: 234.00, precio: 115.00, total: 26910.00 }
+            ],
+            subtotalCerramientos: 207444.29
+        };
+
+        var selectedComparison = 'tradicional';
+
+        // Descripciones de partidas
+        var partidasDescripcion = {
+            'cueva-total': [
+                {
+                    codigo: '45661',
+                    titulo: 'KG ACERO PLACAS DE ANCLAJE (OBRA)',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por chapas, pletinas o similar con acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '04-002',
+                    titulo: 'ACERO LAMINADO (OBRA)',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por perfiles laminados en caliente de las series IPN, IPE, UPN o similar, acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios en taller y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '4.03',
+                    titulo: 'ACERO TUBULAR (OBRA)',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por perfiles laminados en caliente de la series tubular cuadrado o rectangular, acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '4.04',
+                    titulo: 'ACERO ANGULAR EN OBRA',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por perfiles de las series angular L o similar, acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '04.01',
+                    titulo: 'FORJADO SANITARIO REUTILIZABLE BIDIRECCIONAL VENTILADO',
+                    descripcion: 'Forjado sanitario bidireccional prefabricado y reutilizable de 30 cm de canto total, realizado con placas EDRO macizas de hormigón armado de 30 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm), unidas entre sí mediante placas de unión hembra S355 en perfil plano de medidas estándar (400x400mm, 400x200mm, 200x200mm) y espesor 10 mm colocadas en la cara superior de la placa EDRO y pernos pasantes de alta resistencia de 24mm de mm de diámetro y 320mm de longitud total, atornillados con arandela y par de apriete controlado de 800N. El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero no incluye la capa de hormigón de limpieza ni cimentación.',
+                    unidad: 'm²'
+                },
+                {
+                    codigo: '04.02',
+                    titulo: 'FORJADO REUTILIZABLE UNIDIRECCIONAL MIXTO DE HORMIGÓN ARMADO',
+                    descripcion: 'Forjado unidireccional prefabricado y reutilizable de 30 cm de canto, realizado con una capa de placas EDRO aligerada de hormigón armado de 30 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm) unidas entre sí mediante placas de unión hembra S355 en perfil plano de medidas estándar (400x400mm, 400x200mm, 200x200mm) y espesor 10 mm colocadas en ambas caras de la placa EDRO y conectadas mediante placa de unión hembra en cara superior de placa EDRO y placa de unión macho de acero S355 soldada, con pernos pasantes de alta resistencia de 24mm de mm de diámetro y 320mm de longitud total, atornillados con arandela, tuerca y par de apriete controlado de 800N, apoyada directamente sobre pilares o muros de carga. El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero incluye las vigas y los pilares.',
+                    unidad: 'm²'
+                }
+            ],
+            'placa-alveolar': [
+                {
+                    codigo: '45661',
+                    titulo: 'KG ACERO PLACAS DE ANCLAJE (OBRA)',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por chapas, pletinas o similar con acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '04-002',
+                    titulo: 'ACERO LAMINADO (OBRA)',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por perfiles laminados en caliente de las series IPN, IPE, UPN o similar, acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios en taller y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '4.03',
+                    titulo: 'ACERO TUBULAR (OBRA)',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por perfiles laminados en caliente de la series tubular cuadrado o rectangular, acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '4.04',
+                    titulo: 'ACERO ANGULAR EN OBRA',
+                    descripcion: 'Acero UNE-EN 10025 S275JR, formado por perfiles de las series angular L o similar, acabado con imprimación de minio de plomo. El precio incluye trabajos de soldaduras y cortes necesarios y posterior montaje en obra.',
+                    unidad: 'KG'
+                },
+                {
+                    codigo: '04.05',
+                    titulo: 'FORJADO PLACA ALVEOLAR C-30 (25+5) CON CAPA DE COMPRESIÓN',
+                    descripcion: 'Forjado prefabricado de 50+8 cm de canto, realizada con placas alveolares prefabricadas de hormigón pretensado, de 25 cm de canto y 120 cm de anchura, apoyadas directamente sobre estructura metálica o paneles prefabricados de hormigón; incluso relleno de juntas entre placas alveolares (cobijas) y capa de compresión de 5 cm de canto, realizados con HA-25/B/20/XC2 fabricado en central, y vertido con cubilote, y malla electrosoldada ME 20x20Ø5 B500T.',
+                    unidad: 'm²'
+                },
+                {
+                    codigo: '5.01',
+                    titulo: 'CUANTÍA DE ACERO CORRUGADO CAPA DE COMPRESIÓN',
+                    descripcion: 'Acero UNE-EN 10080 B 500 SD para armado de refuerzo en capa de compresión de forjados alveolares.',
+                    unidad: 'KG'
+                }
+            ]
+        };
+
+        // Inicialización
+        
+        function skipVideo() {
+            hideVideoIntroAndShowHero();
+        }
+
+        function showVideoIntro() {
+            var videoOverlay = document.getElementById('videoIntroOverlay');
+            var video = document.getElementById('intro-video');
+            
+            videoOverlay.classList.add('show');
+            
+            // Intentar reproducir con sonido
+            video.muted = false;
+            var playPromise = video.play();
+            
+            // Si el navegador bloquea autoplay con sonido, intentar sin sonido
+            if (playPromise !== undefined) {
+                playPromise.catch(function(error) {
+                    console.log('Autoplay con sonido bloqueado, intentando sin sonido...');
+                    video.muted = true;
+                    video.play();
+                });
+            }
+
+            // Cuando el video termina, ocultarlo y mostrar el hero
+            video.addEventListener('ended', function() {
+                hideVideoIntroAndShowHero();
+            }, { once: true });
+
+            // También permitir hacer clic en el video para saltarlo
+            video.addEventListener('click', function() {
+                hideVideoIntroAndShowHero();
+            }, { once: true });
+        }
+
+        function hideVideoIntroAndShowHero() {
+            var videoOverlay = document.getElementById('videoIntroOverlay');
+            var video = document.getElementById('intro-video');
+            
+            videoOverlay.classList.remove('show');
+            videoOverlay.classList.add('hide');
+            
+            setTimeout(function() {
+                videoOverlay.style.display = 'none';
+                video.pause();
+            }, 500);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById('splashScreen').classList.add('hidden');
+                // Mostrar video intro después del splash
+                setTimeout(function() {
+                    showVideoIntro();
+                }, 500);
+            }, 3000);
+            
+            var today = new Date().toLocaleDateString('es-ES');
+            document.getElementById('currentDate').textContent = today;
+            document.getElementById('current-date-cueva-total').textContent = today;
+            document.getElementById('current-date-alveolar').textContent = today;
+
+            setupNavigation();
+            setupBudgetOptions();
+            setupInputEvents();
+            setupComparison();
+            setupConditionsNavigation();
+            actualizarTablaEstructura();
+            actualizarTotales();
+            calcularMetricasEconomicas();
+        });
+
+        function setupNavigation() {
+            var navItems = document.querySelectorAll('.nav-item');
+            var sections = document.querySelectorAll('.content-section');
+
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var targetTab = this.getAttribute('data-tab');
+
+                    navItems.forEach(function(nav) {
+                        nav.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    sections.forEach(function(section) {
+                        section.classList.remove('active');
+                        if (section.id === targetTab + '-section') {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        function setupBudgetOptions() {
+            var budgetOptions = document.querySelectorAll('.budget-option');
+
+            budgetOptions.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    budgetOptions.forEach(function(opt) {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    presupuestoData.opcionActiva = this.getAttribute('data-option');
+                    actualizarTablaEstructura();
+                    actualizarTotales();
+                    calcularMetricasEconomicas();
+                });
+            });
+        }
+
+        function setupComparison() {
+            var comparisonOptions = document.querySelectorAll('.comparison-option');
+
+            comparisonOptions.forEach(function(option) {
+                option.addEventListener('click', function() {
+                    comparisonOptions.forEach(function(opt) {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    selectedComparison = this.getAttribute('data-comparison');
+                    document.getElementById('comparison-type').textContent = selectedComparison;
+
+                    calcularImpacto();
+                });
+            });
+        }
+
+        function setupConditionsNavigation() {
+            var conditionTabs = document.querySelectorAll('.condition-tab');
+            var conditionContents = document.querySelectorAll('.condition-content');
+
+            conditionTabs.forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    conditionTabs.forEach(function(t) {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    var targetCondition = this.getAttribute('data-condition');
+
+                    conditionContents.forEach(function(content) {
+                        content.classList.remove('active');
+                        if (content.id === targetCondition + '-content') {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        function setupInputEvents() {
+            document.getElementById('unidades').addEventListener('change', actualizarTotales);
+
+            var inputsCantidad = document.querySelectorAll('.input-cantidad');
+            var inputsPrecios = document.querySelectorAll('.input-precio');
+
+            inputsCantidad.forEach(function(input) {
+                input.addEventListener('input', function() {
+                    actualizarPartida(this);
+                });
+            });
+
+            inputsPrecios.forEach(function(input) {
+                input.addEventListener('input', function() {
+                    actualizarPartida(this);
+                });
+            });
+        }
+
+        function actualizarTablaEstructura() {
+            var tbody = document.getElementById('estructura-tbody');
+            var opcion = presupuestoData.opciones[presupuestoData.opcionActiva];
+            var descripciones = partidasDescripcion[presupuestoData.opcionActiva];
+            
+            tbody.innerHTML = '';
+
+            opcion.estructura.forEach(function(partida, index) {
+                var desc = descripciones[index];
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="partida-codigo">${desc.codigo}</td>
+                    <td>
+                        <div class="partida-desc">${desc.titulo}</div>
+                        <div class="partida-comment">${desc.descripcion}</div>
+                    </td>
+                    <td class="text-center">
+                        <div class="input-container">
+                            <input type="number" class="input-cantidad" value="${partida.cantidad}" step="0.01" data-row="${index}" data-chapter="04">
+                        </div>
+                    </td>
+                    <td class="text-center"><span class="unit-label">${desc.unidad}</span></td>
+                    <td class="text-center">
+                        <div class="input-container">
+                            <input type="number" class="input-precio" value="${partida.precio}" step="0.01" data-row="${index}" data-chapter="04">
+                            <span class="currency-symbol">€</span>
+                        </div>
+                    </td>
+                    <td class="text-right partida-total" data-total="${index}">${formatCurrency(partida.total)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('subtotal-04').textContent = formatCurrency(opcion.subtotalEstructura);
+            setupInputEvents();
+        }
+
+        function actualizarPartida(input) {
+            var row = parseInt(input.getAttribute('data-row'));
+            var chapter = input.getAttribute('data-chapter');
+            var cantidad = parseFloat(input.closest('tr').querySelector('.input-cantidad').value) || 0;
+            var precio = parseFloat(input.closest('tr').querySelector('.input-precio').value) || 0;
+            var total = cantidad * precio;
+
+            if (chapter === '04') {
+                presupuestoData.opciones[presupuestoData.opcionActiva].estructura[row].cantidad = cantidad;
+                presupuestoData.opciones[presupuestoData.opcionActiva].estructura[row].precio = precio;
+                presupuestoData.opciones[presupuestoData.opcionActiva].estructura[row].total = total;
+
+                var totalCell = input.closest('tr').querySelector('[data-total="' + row + '"]');
+                totalCell.textContent = formatCurrency(total);
+
+                var subtotalEstructura = presupuestoData.opciones[presupuestoData.opcionActiva].estructura.reduce(function(sum, p) {
+                    return sum + p.total;
+                }, 0);
+                
+                presupuestoData.opciones[presupuestoData.opcionActiva].subtotalEstructura = subtotalEstructura;
+                document.getElementById('subtotal-04').textContent = formatCurrency(subtotalEstructura);
+
+                presupuestoData.opciones[presupuestoData.opcionActiva].totalUnidad = subtotalEstructura + presupuestoData.subtotalCerramientos;
+            } else if (chapter === '07') {
+                presupuestoData.cerramientos[row].cantidad = cantidad;
+                presupuestoData.cerramientos[row].precio = precio;
+                presupuestoData.cerramientos[row].total = total;
+
+                var totalCell = input.closest('tr').querySelector('[data-total="' + row + '"]');
+                totalCell.textContent = formatCurrency(total);
+
+                var subtotalCerramientos = presupuestoData.cerramientos.reduce(function(sum, p) {
+                    return sum + p.total;
+                }, 0);
+                
+                presupuestoData.subtotalCerramientos = subtotalCerramientos;
+                document.getElementById('subtotal-07').textContent = formatCurrency(subtotalCerramientos);
+
+                Object.keys(presupuestoData.opciones).forEach(function(key) {
+                    presupuestoData.opciones[key].totalUnidad = presupuestoData.opciones[key].subtotalEstructura + subtotalCerramientos;
+                });
+            }
+
+            actualizarTotales();
+        }
+
+        function actualizarTotales() {
+            var unidades = parseInt(document.getElementById('unidades').value) || 1;
+            presupuestoData.unidades = unidades;
+
+            var opcionActual = presupuestoData.opciones[presupuestoData.opcionActiva];
+            var totalUnidad = opcionActual.totalUnidad;
+            var totalProyecto = totalUnidad * unidades;
+
+            document.getElementById('totalUnidad').textContent = formatCurrency(totalUnidad);
+            document.getElementById('totalProyecto').textContent = formatCurrency(totalProyecto);
+            document.getElementById('stat-unidades').textContent = unidades;
+            document.getElementById('stat-inversion').textContent = formatCurrency(totalProyecto, false);
+
+            document.getElementById('price-cueva-total').textContent = formatCurrency(presupuestoData.opciones['cueva-total'].totalUnidad);
+            document.getElementById('price-placa-alveolar').textContent = formatCurrency(presupuestoData.opciones['placa-alveolar'].totalUnidad);
+
+            calcularMetricasEconomicas();
+
+            if (document.getElementById('impacto-section').classList.contains('active')) {
+                calcularImpacto();
+            }
+        }
+
+        function calcularMetricasEconomicas() {
+            var totalUnidad = presupuestoData.opciones[presupuestoData.opcionActiva].totalUnidad;
+
+            var roiElement = document.getElementById('roi-fast');
+            var cashFlowElement = document.getElementById('cash-flow');
+            var assetValueElement = document.getElementById('asset-value');
+            var costSavingsElement = document.getElementById('cost-savings');
+            var futureValueElement = document.getElementById('future-value');
+
+            if (roiElement) roiElement.textContent = '8.5x';
+            if (cashFlowElement) cashFlowElement.textContent = '-65%';
+            if (assetValueElement) assetValueElement.textContent = '+45%';
+            if (costSavingsElement) costSavingsElement.textContent = Math.round(totalUnidad * 0.11 / 1000) + 'K€';
+            if (futureValueElement) futureValueElement.textContent = '+125%';
+        }
+
+        function calcularImpacto() {
+            var totalUnidad = presupuestoData.opciones[presupuestoData.opcionActiva].totalUnidad;
+            var superficie = 150;
+
+            var comparaciones = {
+                tradicional: { tiempo: 12, costo: 1.25, co2: 3.2, eficiencia: 25, residuos: 85 },
+                prefabricada: { tiempo: 8, costo: 1.15, co2: 2.1, eficiencia: 40, residuos: 60 },
+                modular: { tiempo: 6, costo: 1.10, co2: 1.6, eficiencia: 55, residuos: 40 }
+            };
+
+            var comp = comparaciones[selectedComparison];
+            var tiempoCueva = 3.5;
+
+            var tiempoAhorro = Math.max(Math.round(comp.tiempo - tiempoCueva), 0);
+            var costoAhorro = Math.max(Math.round((totalUnidad * comp.costo) - totalUnidad), 0);
+            var co2Reduccion = Math.max(((superficie * comp.co2) - (superficie * 0.8)) / 1000, 0).toFixed(1);
+            var eficienciaDiff = Math.max(90 - comp.eficiencia, 0);
+            var residuosReduccion = Math.max(comp.residuos - 5, 0);
+
+            document.getElementById('impact-tiempo').textContent = tiempoAhorro;
+            document.getElementById('impact-costo').textContent = costoAhorro.toLocaleString();
+            document.getElementById('impact-co2').textContent = co2Reduccion;
+            document.getElementById('impact-eficiencia').textContent = '+' + eficienciaDiff + '%';
+            document.getElementById('impact-residuos').textContent = '-' + residuosReduccion + '%';
+            document.getElementById('impact-reventa').textContent = '90%';
+
+            document.getElementById('progress-tiempo').style.width = Math.min(tiempoAhorro * 10, 100) + '%';
+            document.getElementById('progress-costo').style.width = '65%';
+            document.getElementById('progress-co2').style.width = '85%';
+        }
+
+        function descargarPresupuesto() {
+            mostrarNotificacion('Generando PDF del presupuesto ' + presupuestoData.opcionActiva + '...', 'teal');
+        }
+
+        function descargarPresupuestoEspecifico(opcion) {
+            var ruta = opcion === 'cueva-total' ? 
+                'Public/pdf/Presupuesto CUEVA Total - Proyecto Torrelodones.pdf' : 
+                'Public/pdf/Presupuesto CUEVA + Placa Alveolar - Proyecto Torrelodones.pdf';
+            
+            var mensaje = opcion === 'cueva-total' ? 
+                'Descargando: Presupuesto CUEVA Total' : 
+                'Descargando: Presupuesto CUEVA + Placa Alveolar';
+            
+            descargarDocumento(ruta);
+            mostrarNotificacion(mensaje, 'teal');
+        }
+
+        function exportarComparativo() {
+            var opcionTotal = presupuestoData.opciones['cueva-total'];
+            var opcionAlveolar = presupuestoData.opciones['placa-alveolar'];
+            var diferencia = opcionTotal.totalUnidad - opcionAlveolar.totalUnidad;
+
+            var contenido = 'ANÁLISIS COMPARATIVO CUEVA - Proyecto Torrelodones\n' +
+                '==============================================\n\n' +
+                'CUEVA TOTAL: ' + formatCurrency(opcionTotal.totalUnidad) + '\n' +
+                'CUEVA + ALVEOLAR: ' + formatCurrency(opcionAlveolar.totalUnidad) + '\n' +
+                'DIFERENCIA: ' + formatCurrency(diferencia) + '\n\n' +
+                'Sistema generado el ' + new Date().toLocaleString('es-ES');
+            
+            var elemento = document.createElement('a');
+            elemento.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contenido));
+            elemento.setAttribute('download', 'Analisis-Comparativo-CUEVA-' + new Date().toISOString().split('T')[0] + '.txt');
+            elemento.style.display = 'none';
+            document.body.appendChild(elemento);
+            elemento.click();
+            document.body.removeChild(elemento);
+            
+            mostrarNotificacion('Análisis comparativo generado correctamente', 'teal');
+        }
+
+        function descargarDocumento(ruta) {
+            // Crear un enlace temporal para descargar el documento
+            var nombreArchivo = ruta.split('/').pop();
+            var elemento = document.createElement('a');
+            elemento.setAttribute('href', ruta);
+            elemento.setAttribute('download', nombreArchivo);
+            elemento.setAttribute('target', '_blank');
+            elemento.style.display = 'none';
+            document.body.appendChild(elemento);
+            elemento.click();
+            document.body.removeChild(elemento);
+            
+            mostrarNotificacion('Descargando: ' + nombreArchivo, 'teal');
+        }
+
+        function enviarFormulario() {
+            var nombre = document.getElementById('contact-name').value;
+            var email = document.getElementById('contact-email').value;
+            
+            if (!nombre || !email) {
+                mostrarNotificacion('Por favor, completa al menos nombre y email', 'orange');
+                return;
+            }
+
+            mostrarNotificacion('¡Mensaje enviado! Te contactaremos en menos de 24h', 'teal');
+            
+            setTimeout(function() {
+                document.getElementById('contact-name').value = '';
+                document.getElementById('contact-email').value = '';
+                document.getElementById('contact-phone').value = '';
+                document.getElementById('contact-company').value = '';
+                document.getElementById('contact-type').value = '';
+                document.getElementById('contact-message').value = '';
+            }, 1000);
+        }
+
+        function mostrarNotificacion(mensaje, tipo) {
+            if (!tipo) tipo = 'teal';
+            
+            var colores = {
+                teal: '#00D4AA',
+                blue: '#2563EB',
+                green: '#16A34A',
+                orange: '#F59E0B'
+            };
+
+            var notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = colores[tipo];
+            notification.innerHTML = '<i class="fas fa-check-circle"></i><span>' + mensaje + '</span>';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(function() { 
+                notification.classList.add('show'); 
+            }, 100);
+            
+            setTimeout(function() {
+                notification.classList.remove('show');
+                setTimeout(function() {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function formatCurrency(amount, includeSymbol) {
+            if (includeSymbol === undefined) includeSymbol = true;
+            
+            var formatted = new Intl.NumberFormat('es-ES', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+            
+            return includeSymbol ? formatted + ' €' : formatted;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                descargarPresupuesto();
+            }
+        });
+
+        // Skip splash screen on click
+        document.getElementById('splashScreen').addEventListener('click', function() {
+            this.classList.add('hidden');
+            setTimeout(function() {
+                showVideoIntro();
+            }, 500);
+        });
+
+        console.log('🏠 CUEVA - Sistema Universal de Construcción');
+        console.log('📋 Presupuesto Interactivo Definitivo - Proyecto Torrelodones');
+        console.log('🎯 Newarco + Pentavep + CUEVA');
+        console.log('🎬 Con video intro y galería completa');
+    </script>
+</body>
+</html>
