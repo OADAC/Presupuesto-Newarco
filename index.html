@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones v3.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
     
@@ -64,7 +67,7 @@
             height: 100%;
             background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
             z-index: 9999;
-            display: flex;
+            display: none; /* Oculto inicialmente, se muestra después del login */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -2968,13 +2971,22 @@
             
             // Credenciales: Usuario: Pentavep / Contraseña: Newarco
             if (username === 'Pentavep' && password === 'Newarco') {
-                // Login exitoso
+                // Login exitoso - Ocultar login
                 document.getElementById('loginScreen').classList.add('hidden');
                 
-                // Mostrar splash screen después de 500ms
+                // Mostrar splash screen después de 300ms
                 setTimeout(function() {
                     document.getElementById('splashScreen').style.display = 'flex';
-                }, 500);
+                    document.getElementById('splashScreen').classList.remove('hidden');
+                    
+                    // Después del splash (3 segundos), mostrar el video
+                    setTimeout(function() {
+                        document.getElementById('splashScreen').classList.add('hidden');
+                        setTimeout(function() {
+                            showVideoIntro();
+                        }, 500);
+                    }, 3000);
+                }, 300);
                 
                 return false;
             } else {
@@ -3179,13 +3191,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                document.getElementById('splashScreen').classList.add('hidden');
-                // Mostrar video intro después del splash
-                setTimeout(function() {
-                    showVideoIntro();
-                }, 500);
-            }, 3000);
+            // No iniciar splash/video automáticamente - esperamos el login primero
+            // El login mostrará el splash y luego el video
             
             var today = new Date().toLocaleDateString('es-ES');
             document.getElementById('currentDate').textContent = today;
