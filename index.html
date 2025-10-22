@@ -260,6 +260,37 @@
             transform: scale(1.05);
         }
 
+        .unmute-video-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 107, 74, 0.9);
+            color: white;
+            border: 2px solid var(--cueva-coral);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .unmute-video-btn:hover {
+            background: rgba(255, 107, 74, 1);
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         /* ==================== LOGO ANIMADO HEADER ==================== */
         .logo-animated {
             position: relative;
@@ -1713,6 +1744,9 @@
         <button class="skip-video-btn" onclick="skipVideo()">
             <i class="fas fa-times"></i> Saltar
         </button>
+        <button class="unmute-video-btn" id="unmuteBtn" onclick="enableSound()" style="display: none;">
+            <i class="fas fa-volume-up"></i> Activar Sonido
+        </button>
         <video id="intro-video" autoplay>
             <source src="Public/intro.mp4" type="video/mp4">
             Tu navegador no soporta el elemento de video.
@@ -1789,7 +1823,7 @@
                 <p>Alianza estratégica entre CUEVA, Newarco y Pentavep</p>
             </div>
             <div class="partner-grid">
-                <a href="https://newarco.es/" target="_blank" class="partner-card">
+                <a href="https://newarco.es/" target="_blank" class="partner-card" style="background: linear-gradient(rgba(27, 41, 81, 0.85), rgba(27, 41, 81, 0.85)), url('Public/NEWARCO.png') center/cover;">
                     <div class="partner-card-header">
                         <div class="partner-icon">
                             <i class="fas fa-drafting-compass"></i>
@@ -1810,7 +1844,7 @@
                     </div>
                 </a>
 
-                <a href="https://www.casaspasivaslauvar.com/" target="_blank" class="partner-card">
+                <a href="https://www.casaspasivaslauvar.com/" target="_blank" class="partner-card" style="background: linear-gradient(rgba(27, 41, 81, 0.85), rgba(27, 41, 81, 0.85)), url('Public/PENTAVEP.png') center/cover;">
                     <div class="partner-card-header">
                         <div class="partner-icon">
                             <i class="fas fa-hard-hat"></i>
@@ -1858,24 +1892,6 @@
 
         <!-- SECCIÓN PRESUPUESTO -->
         <div id="presupuesto-section" class="content-section active">
-            <!-- Tarjetas de Cliente -->
-            <div class="client-cards">
-                <div class="client-card">
-                    <img src="https://newarco.com/wp-content/uploads/2024/05/cropped-LOGO-newarco-negro-01.png" alt="Newarco Logo" class="client-logo" onerror="this.style.display='none'">
-                    <div class="client-info">
-                        <h4>NEWARCO</h4>
-                        <p>Arquitectura innovadora y sostenible</p>
-                    </div>
-                </div>
-                <div class="client-card">
-                    <img src="https://www.pentavep.com/wp-content/uploads/2023/04/LOGO_CABECERA_PENTAVEP.png" alt="Pentavep Logo" class="client-logo" onerror="this.style.display='none'">
-                    <div class="client-info">
-                        <h4>PENTAVEP</h4>
-                        <p>Construcción prefabricada y modular</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- Selector de Opción -->
             <div class="budget-option-selector">
                 <h3>Selecciona la Opción Constructiva</h3>
@@ -2232,7 +2248,7 @@
 
             <!-- Imagen Decorativa -->
             <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
-                <img src="Public/Fotos/IMG_4318.PNG" alt="Análisis constructivo" style="width: 100%; height: 300px; object-fit: cover;">
+                <img src="Public/COMPARATIVA.png" alt="Análisis comparativo" style="width: 100%; height: 400px; object-fit: contain; background: var(--gray-100);">
             </div>
         </div>
 
@@ -2365,22 +2381,31 @@
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_4312.PNG" alt="Vista 1" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/IMG_4312.PNG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_4314.PNG" alt="Vista 2" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/IMG_4314.PNG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_4318.PNG" alt="Vista 3" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/IMG_4318.PNG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_4319.PNG" alt="Vista 4" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/IMG_4319.PNG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_E5371.JPG" alt="Renderizado" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/IMG_E5371.JPG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" alt="Referencia" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_6299.HEIC" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_6301.HEIC" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/IMG_6305.HEIC" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                 </div>
             </div>
@@ -2481,8 +2506,8 @@
             </div>
 
             <!-- Imagen Decorativa -->
-            <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
-                <img src="Public/Fotos/IMG_4314.PNG" alt="Detalles constructivos" style="width: 100%; height: 300px; object-fit: cover;">
+            <div class="tech-card" style="margin-top: 2rem;">
+                <img src="Public/Fotos/IMG_4314.PNG" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;">
             </div>
         </div>
 
@@ -2605,7 +2630,7 @@
         <div id="contacto-section" class="content-section">
             <div class="contact-grid">
                 <div class="contact-card">
-                    <h3>Información de Contacto</h3>
+                    <h3><i class="fas fa-building" style="color: var(--cueva-electric); margin-right: 0.5rem;"></i> CUEVA / EDRO Systems</h3>
                     
                     <div class="contact-item">
                         <div class="contact-item-icon bg-teal">
@@ -2614,7 +2639,6 @@
                         <div class="contact-item-text">
                             <h4>Email Corporativo</h4>
                             <p>luismgarcia@edrosystems.com</p>
-                            <p></p>
                             <p style="color: var(--gray-500);">Respuesta en menos de 24h</p>
                         </div>
                     </div>
@@ -2626,7 +2650,6 @@
                         <div class="contact-item-text">
                             <h4>Teléfono Directo</h4>
                             <p>+34 617 808 692</p>
-                            <p></p>
                             <p style="color: var(--gray-500);">Lun-Vie: 9:00-19:00h</p>
                         </div>
                     </div>
@@ -2642,21 +2665,57 @@
                             <p style="color: var(--gray-500);">Cita previa</p>
                         </div>
                     </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3><i class="fas fa-hard-hat" style="color: var(--cueva-coral); margin-right: 0.5rem;"></i> PentaVEP - Partner Constructora</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-teal">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Email</h4>
+                            <p>info@pentavep.com</p>
+                            <p style="color: var(--gray-500);">Ejecución del proyecto</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-blue">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Teléfono</h4>
+                            <p>+34 917 261 507</p>
+                            <p style="color: var(--gray-500);">Fax: +34 913 561 539</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon bg-green">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <h4>Oficinas</h4>
+                            <p>Paseo Marqués de Zafra 13</p>
+                            <p>28028 Madrid</p>
+                        </div>
+                    </div>
 
                     <div class="contact-item">
                         <div class="contact-item-icon bg-purple">
-                            <i class="fas fa-industry"></i>
+                            <i class="fas fa-clock"></i>
                         </div>
                         <div class="contact-item-text">
-                            <h4>Showroom & Factory</h4>
-                            <p>Polígono Industrial Norte</p>
-                            <p>45678 Toledo</p>
-                            <p style="color: var(--gray-500);">Visitas programadas</p>
+                            <h4>Horario Comercial</h4>
+                            <p>Lun-Jue: 9:00-14:00 y 15:00-20:00</p>
+                            <p>Viernes: 9:00-14:00</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="contact-card">
+                <div class="contact-card" style="grid-column: 1 / -1;">
                     <h3>Solicitar Información</h3>
                     
                     <div class="form-grid">
@@ -2684,9 +2743,11 @@
                 </div>
             </div>
 
-            <!-- Imagen Decorativa -->
-            <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
-                <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" alt="Villa moderna CUEVA" style="width: 100%; height: 350px; object-fit: cover;">
+            <!-- Video Decorativo -->
+            <div class="tech-card" style="margin-top: 2rem; padding: 0; overflow: hidden;">
+                <video autoplay muted loop playsinline style="width: 100%; height: 400px; object-fit: contain; background: var(--gray-900);">
+                    <source src="Public/CONTACTO.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
     </div>
@@ -2824,6 +2885,7 @@
         function showVideoIntro() {
             var videoOverlay = document.getElementById('videoIntroOverlay');
             var video = document.getElementById('intro-video');
+            var unmuteBtn = document.getElementById('unmuteBtn');
             
             videoOverlay.classList.add('show');
             
@@ -2831,16 +2893,21 @@
             video.muted = false;
             var playPromise = video.play();
             
-            // Si el navegador bloquea autoplay con sonido, intentar sin sonido
+            // Si el navegador bloquea autoplay con sonido, mostrar botón
             if (playPromise !== undefined) {
-                playPromise.catch(function(error) {
-                    console.log('Autoplay con sonido bloqueado, intentando sin sonido...');
+                playPromise.then(function() {
+                    // Video se reproduce con sonido correctamente
+                    console.log('Video reproduciendo con sonido');
+                }).catch(function(error) {
+                    console.log('Autoplay con sonido bloqueado, reproduciendo sin sonido...');
                     video.muted = true;
                     video.play();
+                    // Mostrar botón para activar sonido
+                    unmuteBtn.style.display = 'flex';
                 });
             }
 
-            // Cuando el video termina, ocultarlo y mostrar el hero
+            // Cuando el video termina, ocultarlo
             video.addEventListener('ended', function() {
                 hideVideoIntroAndShowHero();
             }, { once: true });
@@ -2849,6 +2916,13 @@
             video.addEventListener('click', function() {
                 hideVideoIntroAndShowHero();
             }, { once: true });
+        }
+
+        function enableSound() {
+            var video = document.getElementById('intro-video');
+            var unmuteBtn = document.getElementById('unmuteBtn');
+            video.muted = false;
+            unmuteBtn.style.display = 'none';
         }
 
         function hideVideoIntroAndShowHero() {
@@ -3284,3 +3358,4 @@
     </script>
 </body>
 </html>
+
