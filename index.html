@@ -291,6 +291,168 @@
             50% { opacity: 0.7; }
         }
 
+        /* ==================== LOGIN SCREEN ==================== */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .login-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .login-container {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--cueva-electric), var(--cueva-sky));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-logo i {
+            font-size: 2.5rem;
+            color: var(--white);
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--cueva-navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .login-input-group {
+            position: relative;
+        }
+
+        .login-input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 1.1rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .login-input:focus {
+            border-color: var(--cueva-electric);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+        }
+
+        .login-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--cueva-electric), var(--cueva-sky));
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 170, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            background: rgba(255, 107, 74, 0.1);
+            color: var(--cueva-coral);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .login-footer {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .login-brands {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .login-brand-logo {
+            font-weight: 700;
+            color: var(--cueva-navy);
+            font-size: 0.9rem;
+        }
+
         /* ==================== LOGO ANIMADO HEADER ==================== */
         .logo-animated {
             position: relative;
@@ -1718,6 +1880,49 @@
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h1 class="login-title">CUEVA</h1>
+            <p class="login-subtitle">Acceso al Sistema de Presupuestos</p>
+            
+            <form class="login-form" onsubmit="return handleLogin(event)">
+                <div class="login-input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="login-input" id="username" placeholder="Usuario" required>
+                </div>
+                
+                <div class="login-input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" class="login-input" id="password" placeholder="Contraseña" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Acceder al Sistema
+                </button>
+            </form>
+            
+            <div class="login-error" id="loginError">
+                <i class="fas fa-exclamation-circle"></i> Usuario o contraseña incorrectos
+            </div>
+            
+            <div class="login-brands">
+                <span class="login-brand-logo">NEWARCO</span>
+                <span style="color: var(--gray-300);">•</span>
+                <span class="login-brand-logo">PENTAVEP</span>
+                <span style="color: var(--gray-300);">•</span>
+                <span class="login-brand-logo" style="color: var(--cueva-electric);">CUEVA</span>
+            </div>
+            
+            <div class="login-footer">
+                Proyecto Torrelodones - Sistema Universal
+            </div>
+        </div>
+    </div>
+
     <!-- Splash Screen -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-logo">
@@ -2248,7 +2453,7 @@
 
             <!-- Imagen Decorativa -->
             <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg);">
-                <img src="Public/COMPARATIVA.png" alt="Análisis comparativo" style="width: 100%; height: 400px; object-fit: contain; background: var(--gray-100);">
+                <img src="Public/COMPARATIVA.png" alt="Análisis comparativo" style="width: 100%; height: 500px; object-fit: cover;">
             </div>
         </div>
 
@@ -2381,6 +2586,15 @@
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/Imagen1.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+                        <img src="Public/Fotos/Imagen2.jpg" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
                         <img src="Public/Fotos/IMG_4312.PNG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
@@ -2396,16 +2610,7 @@
                         <img src="Public/Fotos/IMG_E5371.JPG" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                     <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/freepik__modern-villa-concrete-walls-and-wooden-beams-big-g__42748.JPEG" style="width: 100%; height: 200px; object-fit: cover;">
-                    </div>
-                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_6299.HEIC" style="width: 100%; height: 200px; object-fit: cover;">
-                    </div>
-                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_6301.HEIC" style="width: 100%; height: 200px; object-fit: cover;">
-                    </div>
-                    <div style="border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
-                        <img src="Public/Fotos/IMG_6305.HEIC" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="Public/Fotos/Presentación1.png" style="width: 100%; height: 200px; object-fit: cover;">
                     </div>
                 </div>
             </div>
@@ -2745,7 +2950,7 @@
 
             <!-- Video Decorativo -->
             <div class="tech-card" style="margin-top: 2rem; padding: 0; overflow: hidden;">
-                <video autoplay muted loop playsinline style="width: 100%; height: 400px; object-fit: contain; background: var(--gray-900);">
+                <video autoplay muted loop playsinline style="width: 100%; height: 700px; object-fit: contain; background-color: var(--gray-900);">
                     <source src="Public/CONTACTO.mp4" type="video/mp4">
                 </video>
             </div>
@@ -2753,6 +2958,41 @@
     </div>
 
     <script>
+        // ==================== SISTEMA DE LOGIN ====================
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var loginError = document.getElementById('loginError');
+            
+            // Credenciales
+            if (username === 'Newarco' && password === 'Pentavep') {
+                // Login exitoso
+                document.getElementById('loginScreen').classList.add('hidden');
+                
+                // Mostrar splash screen después de 500ms
+                setTimeout(function() {
+                    document.getElementById('splashScreen').style.display = 'flex';
+                }, 500);
+                
+                return false;
+            } else {
+                // Login fallido
+                loginError.classList.add('show');
+                
+                // Limpiar campos
+                document.getElementById('password').value = '';
+                
+                // Quitar error después de 3 segundos
+                setTimeout(function() {
+                    loginError.classList.remove('show');
+                }, 3000);
+                
+                return false;
+            }
+        }
+
         // Datos del presupuesto
         var presupuestoData = {
             unidades: 3,
