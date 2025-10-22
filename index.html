@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones v3.0</title>
+    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones v4.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
     
@@ -66,8 +66,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
-            z-index: 9999;
-            display: none; /* Oculto inicialmente, se muestra después del login */
+            z-index: 10000; /* Más alto que el login */
+            display: flex; /* Visible inicialmente */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -302,7 +302,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
-            z-index: 10000;
+            z-index: 9999; /* Debajo del splash */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2971,22 +2971,13 @@
             
             // Credenciales: Usuario: Pentavep / Contraseña: Newarco
             if (username === 'Pentavep' && password === 'Newarco') {
-                // Login exitoso - Ocultar login
+                // Login exitoso - Ocultar login y mostrar video
                 document.getElementById('loginScreen').classList.add('hidden');
                 
-                // Mostrar splash screen después de 300ms
+                // Mostrar video después de 500ms
                 setTimeout(function() {
-                    document.getElementById('splashScreen').style.display = 'flex';
-                    document.getElementById('splashScreen').classList.remove('hidden');
-                    
-                    // Después del splash (3 segundos), mostrar el video
-                    setTimeout(function() {
-                        document.getElementById('splashScreen').classList.add('hidden');
-                        setTimeout(function() {
-                            showVideoIntro();
-                        }, 500);
-                    }, 3000);
-                }, 300);
+                    showVideoIntro();
+                }, 500);
                 
                 return false;
             } else {
@@ -3191,8 +3182,13 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // No iniciar splash/video automáticamente - esperamos el login primero
-            // El login mostrará el splash y luego el video
+            // Secuencia: SPLASH (3s) → LOGIN → (después de login) VIDEO
+            // Mostrar splash primero (ya visible por defecto)
+            setTimeout(function() {
+                // Ocultar splash después de 3 segundos
+                document.getElementById('splashScreen').classList.add('hidden');
+                // El login ya está visible debajo, no necesitamos hacer nada más
+            }, 3000);
             
             var today = new Date().toLocaleDateString('es-ES');
             document.getElementById('currentDate').textContent = today;
@@ -3590,12 +3586,10 @@
             }
         });
 
-        // Skip splash screen on click
+        // Skip splash screen on click - solo oculta el splash, no muestra video
         document.getElementById('splashScreen').addEventListener('click', function() {
             this.classList.add('hidden');
-            setTimeout(function() {
-                showVideoIntro();
-            }, 500);
+            // No mostrar video aquí - el video solo se muestra después del login
         });
 
         console.log('🏠 CUEVA - Sistema Universal de Construcción');
