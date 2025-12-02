@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones v4.0</title>
+    <title>CUEVA - Presupuesto Interactivo | Proyecto Torrelodones</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
     
@@ -66,8 +63,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
-            z-index: 10000; /* Más alto que el login */
-            display: flex; /* Visible inicialmente */
+            z-index: 9999;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -302,7 +299,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--cueva-navy), var(--gray-800));
-            z-index: 9999; /* Debajo del splash */
+            z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -312,6 +309,7 @@
         .login-screen.hidden {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
         }
 
         .login-container {
@@ -1804,6 +1802,181 @@
         .icon-teal { background: rgba(0, 212, 170, 0.1); color: var(--cueva-electric); }
         .icon-green { background: #D1F7C4; color: #16A34A; }
 
+        /* ==================== OPCIONALES ==================== */
+        .opcionales-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .opcionales-header {
+            background: linear-gradient(135deg, var(--cueva-amber), #f97316);
+            color: var(--white);
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .opcionales-header-left h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .opcionales-header-left p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .opcionales-total {
+            text-align: right;
+        }
+
+        .opcionales-total-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .opcionales-total-value {
+            font-size: 2rem;
+            font-weight: 900;
+            font-family: var(--font-mono);
+        }
+
+        .opcionales-content {
+            padding: 0;
+        }
+
+        .opcional-item {
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .opcional-item:last-child {
+            border-bottom: none;
+        }
+
+        .opcional-item:hover {
+            background: var(--gray-50);
+        }
+
+        .opcional-item.selected {
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .opcional-checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            cursor: pointer;
+        }
+
+        .opcional-checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            margin-top: 0.25rem;
+        }
+
+        .opcional-item.selected .opcional-checkbox {
+            background: var(--cueva-amber);
+            border-color: var(--cueva-amber);
+        }
+
+        .opcional-checkbox i {
+            color: var(--white);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .opcional-item.selected .opcional-checkbox i {
+            display: block;
+        }
+
+        .opcional-info {
+            flex: 1;
+        }
+
+        .opcional-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .opcional-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--cueva-navy);
+            margin-bottom: 0.25rem;
+        }
+
+        .opcional-codigo {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--cueva-amber);
+            font-weight: 600;
+        }
+
+        .opcional-descripcion {
+            color: var(--gray-600);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .opcional-metrics {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.875rem;
+            flex-wrap: wrap;
+        }
+
+        .opcional-metric {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-700);
+        }
+
+        .opcional-metric strong {
+            font-family: var(--font-mono);
+            color: var(--gray-900);
+        }
+
+        .opcional-precio {
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+
+        .opcional-precio-total {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--cueva-navy);
+            font-family: var(--font-mono);
+        }
+
+        .opcional-precio-unitario {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
             .splash-symbol {
@@ -1878,6 +2051,34 @@
 
             .partner-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .opcionales-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .opcionales-total {
+                text-align: left;
+            }
+
+            .opcional-checkbox-wrapper {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .opcional-header-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .opcional-precio {
+                text-align: left;
+            }
+
+            .opcional-metrics {
+                flex-direction: column;
+                gap: 0.5rem;
             }
         }
     </style>
@@ -1956,7 +2157,7 @@
             <i class="fas fa-volume-up"></i> Activar Sonido
         </button>
         <video id="intro-video" autoplay>
-            <source src="https://github.com/OADAC/Presupuesto-Newarco/releases/download/v1.0/intro.mp4" type="video/mp4">
+            <source src="Public/intro.mp4" type="video/mp4">
             Tu navegador no soporta el elemento de video.
         </video>
     </div>
@@ -1999,6 +2200,10 @@
             <a href="#" class="nav-item active" data-tab="presupuesto">
                 <i class="fas fa-calculator"></i>
                 Presupuesto
+            </a>
+            <a href="#" class="nav-item" data-tab="opcionales">
+                <i class="fas fa-plus-circle"></i>
+                Opcionales
             </a>
             <a href="#" class="nav-item" data-tab="impacto">
                 <i class="fas fa-chart-line"></i>
@@ -2058,7 +2263,7 @@
                             <i class="fas fa-hard-hat"></i>
                         </div>
                         <div>
-                            <h4>Pentavep - Casas Pasivas Lauvar</h4>
+                            <h4>Soluciones Tecnológicas Pentavep</h4>
                             <p>Constructora Partner - Ejecución del Proyecto</p>
                         </div>
                     </div>
@@ -2194,7 +2399,7 @@
                     <h3 class="chapter-title">07 - CERRAMIENTOS Y DIVISIONES</h3>
                     <div class="chapter-total">
                         <div class="label">Subtotal</div>
-                        <div class="amount" id="subtotal-07">207.444,29 €</div>
+                        <div class="amount" id="subtotal-07">163.905,84 €</div>
                     </div>
                 </div>
                 
@@ -2225,11 +2430,11 @@
                                 <td class="text-center"><span class="unit-label">m²</span></td>
                                 <td class="text-center">
                                     <div class="input-container">
-                                        <input type="number" class="input-precio" value="145.00" step="0.01" data-row="0" data-chapter="07">
+                                        <input type="number" class="input-precio" value="165.00" step="0.01" data-row="0" data-chapter="07">
                                         <span class="currency-symbol">€</span>
                                     </div>
                                 </td>
-                                <td class="text-right partida-total" data-total="0">122.124,80 €</td>
+                                <td class="text-right partida-total" data-total="0">138.969,60 €</td>
                             </tr>
                             <tr>
                                 <td class="partida-codigo">07.07</td>
@@ -2291,48 +2496,69 @@
                                 </td>
                                 <td class="text-right partida-total" data-total="3">5.007,54 €</td>
                             </tr>
-                            <tr>
-                                <td class="partida-codigo">04.01</td>
-                                <td>
-                                    <div class="partida-desc">SOLADO DE HORMIGÓN REUTILIZABLE, TERMINACIÓN RAYADA + HUECOS DRENAJE</div>
-                                    <div class="partida-comment">Solado prefabricado y reutilizable de 14 cm de canto total, realizado con placas EDRO INFRAESTRUCTURA macizas de hormigón armado de 14 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm). El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero no incluye la capa de hormigón de limpieza ni cimentación.</div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="input-container">
-                                        <input type="number" class="input-cantidad" value="247.95" step="0.01" data-row="4" data-chapter="07">
-                                    </div>
-                                </td>
-                                <td class="text-center"><span class="unit-label">m²</span></td>
-                                <td class="text-center">
-                                    <div class="input-container">
-                                        <input type="number" class="input-precio" value="135.00" step="0.01" data-row="4" data-chapter="07">
-                                        <span class="currency-symbol">€</span>
-                                    </div>
-                                </td>
-                                <td class="text-right partida-total" data-total="4">33.473,25 €</td>
-                            </tr>
-                            <tr>
-                                <td class="partida-codigo">07.10</td>
-                                <td>
-                                    <div class="partida-desc">VALLADO PERIMETRAL ELEMENTOS PREFABRICADOS 120MM</div>
-                                    <div class="partida-comment">Vallado formado por paneles Valla EDRO prefabricados de hormigón armado de 12, de espesor, de ancho estándar (3m o 1,5m) o personalizado de dimensiones derivadas de las estándar, con altura libre de planta de hasta Xm, unidos entre sí mediante placas de unión metálicas ocultas atornilladas ,empotre o vaina de conexión.</div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="input-container">
-                                        <input type="number" class="input-cantidad" value="234.00" step="0.01" data-row="5" data-chapter="07">
-                                    </div>
-                                </td>
-                                <td class="text-center"><span class="unit-label">m²</span></td>
-                                <td class="text-center">
-                                    <div class="input-container">
-                                        <input type="number" class="input-precio" value="115.00" step="0.01" data-row="5" data-chapter="07">
-                                        <span class="currency-symbol">€</span>
-                                    </div>
-                                </td>
-                                <td class="text-right partida-total" data-total="5">26.910,00 €</td>
-                            </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN OPCIONALES -->
+        <div id="opcionales-section" class="content-section">
+            <div class="opcionales-container">
+                <div class="opcionales-header">
+                    <div class="opcionales-header-left">
+                        <h2>08 - Partidas Opcionales</h2>
+                        <p>Selecciona las partidas adicionales que desees incluir en el proyecto</p>
+                    </div>
+                    <div class="opcionales-total">
+                        <div class="opcionales-total-label">Total Opcionales Seleccionados</div>
+                        <div class="opcionales-total-value" id="totalOpcionales">0,00 €</div>
+                    </div>
+                </div>
+                <div class="opcionales-content" id="opcionales-list">
+                    <!-- Se llenará dinámicamente con JavaScript -->
+                </div>
+            </div>
+
+            <!-- Resumen Totales con Opcionales -->
+            <div class="stats-grid" style="margin-top: 2rem;">
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Base sin Opcionales</h4>
+                            <p class="amount text-cueva-navy" id="totalBase">-</p>
+                            <span class="label">Total 3 unidades</span>
+                        </div>
+                        <div class="summary-icon bg-teal">
+                            <i class="fas fa-home icon-teal"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Opcionales Seleccionados</h4>
+                            <p class="amount text-orange" style="color: var(--cueva-amber);" id="totalOpcionalesResumen">0,00 €</p>
+                            <span class="label" id="numOpcionalesSeleccionados">0 partidas seleccionadas</span>
+                        </div>
+                        <div class="summary-icon" style="background: rgba(245, 158, 11, 0.1);">
+                            <i class="fas fa-plus-circle" style="color: var(--cueva-amber);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-card-content">
+                        <div class="summary-text">
+                            <h4>Total Final Proyecto</h4>
+                            <p class="amount text-coral" style="color: var(--cueva-coral);" id="totalFinal">-</p>
+                            <span class="label">Base + Opcionales</span>
+                        </div>
+                        <div class="summary-icon" style="background: rgba(255, 107, 74, 0.1);">
+                            <i class="fas fa-calculator" style="color: var(--cueva-coral);"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2470,14 +2696,14 @@
                         <div class="stats-grid">
                             <div class="stat-item">
                                 <span class="stat-number">∞</span>
-                                <span class="stat-label">Materiales Compatible</span>
+                                <span class="stat-label">Materiales Compatibles</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">95%</span>
                                 <span class="stat-label">Componentes reutilizables</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number">A++</span>
+                                <span class="stat-number">Mayor</span>
                                 <span class="stat-label">Eficiencia energética</span>
                             </div>
                         </div>
@@ -2636,7 +2862,7 @@
                     <div class="condition-group">
                         <h4>Condiciones Generales</h4>
                         <ul class="condition-list">
-                            <li><span class="condition-number">I.</span> La vigencia de esta oferta se limita a un mes.</li>
+                            <li><span class="condition-number">I.</span> La vigencia de esta oferta se limita a tres meses.</li>
                             <li><span class="condition-number">II.</span> En esta oferta no está incluido el IVA, que se facturará al tipo vigente en cada momento.</li>
                             <li><span class="condition-number">III.</span> Los precios no contemplan y por tanto serán objeto de revisión global, las subidas extraordinarias de las materias primas, auxiliares, transportes o grúas, entendiendo por subidas extraordinarias aquellas que afectando de manera generalizada al sector superen el 10% en un plazo no superior a 12 meses.</li>
                             <li><span class="condition-number">IV.</span> Durante el tiempo que dure la obra el cliente ha de disponer en obra suministro de electricidad y agua.</li>
@@ -2659,8 +2885,8 @@
                         <ul class="condition-list">
                             <li><span class="condition-number">I.</span> En el montaje y colocación de la placa alveolar no está incluido la realización o ejecución in situ de huecos o pasantes, ni relleno de cobijas o similar.</li>
                             <li><span class="condition-number">II.</span> La apertura de huecos o pasantes se facturará por hora de administración.</li>
-                            <li><span class="condition-number">III.</span> Los cortes longitudinales se facturarán a 15€/m.</li>
-                            <li><span class="condition-number">IV.</span> El suministro de la placa alveolar está considerado sobre camión tráiler sin autodescarga, el tiempo máximo de descarga por camión contemplado en el presupuesto es de 2 horas, a partir de ese tiempo se facturará a 35€/h de espera, siempre que estas, sean por causas ajenas a nuestra empresa.</li>
+                            <li><span class="condition-number">III.</span> Los cortes longitudinales se facturarán a 45€/m.</li>
+                            <li><span class="condition-number">IV.</span> El suministro de la placa alveolar está considerado sobre camión tráiler sin autodescarga, el tiempo máximo de descarga por camión contemplado en el presupuesto es de 2 horas, a partir de ese tiempo se facturará a 65€/h de espera, siempre que estas, sean por causas ajenas a nuestra empresa.</li>
                             <li><span class="condition-number">V.</span> En el caso de requerir o necesitar apoyo con banda de neopreno para el apoyo de la placa alveolar, esta se facturará a 7 €/m.</li>
                             <li><span class="condition-number">VI.</span> Toda la estructura metálica aportada en obra será miniada en fábrica, no siendo objeto de ignifugación o cualquier otro tratamiento similar.</li>
                         </ul>
@@ -2696,7 +2922,6 @@
                         <h4>Condiciones Particulares del Proyecto</h4>
                         <ul class="condition-list">
                             <li><span class="condition-number">1.</span> No se incluye nada relacionado con la cimentación debiendo de estar completamente ejecutada en el momento de la recepción de los muros.</li>
-                            <li><span class="condition-number">2.</span> No se incluye nada relacionado con escaleras ni vuelos o pérgolas exteriores.</li>
                             <li><span class="condition-number">3.</span> No se incluye ningún tipo de mortero de retracción.</li>
                         </ul>
                     </div>
@@ -2846,7 +3071,7 @@
                         </div>
                         <div class="contact-item-text">
                             <h4>Email Corporativo</h4>
-                            <p>luismgarcia@edrosystems.com</p>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80ecf5e9f3ede7e1f2e3e9e1c0e5e4f2eff3f9f3f4e5edf3aee3efed">[email&#160;protected]</a></p>
                             <p style="color: var(--gray-500);">Respuesta en menos de 24h</p>
                         </div>
                     </div>
@@ -2884,7 +3109,7 @@
                         </div>
                         <div class="contact-item-text">
                             <h4>Email</h4>
-                            <p>info@pentavep.com</p>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea7a0a8a18ebeaba0baafb8abbee0ada1a3">[email&#160;protected]</a></p>
                             <p style="color: var(--gray-500);">Ejecución del proyecto</p>
                         </div>
                     </div>
@@ -2960,7 +3185,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // ==================== SISTEMA DE LOGIN ====================
         function handleLogin(event) {
             event.preventDefault();
@@ -2969,15 +3194,24 @@
             var password = document.getElementById('password').value;
             var loginError = document.getElementById('loginError');
             
-            // Credenciales: Usuario: Pentavep / Contraseña: Newarco
+            // Credenciales
             if (username === 'Pentavep' && password === 'Newarco') {
-                // Login exitoso - Ocultar login y mostrar video
+                // Login exitoso
                 document.getElementById('loginScreen').classList.add('hidden');
                 
-                // Mostrar video después de 500ms
+                // Mostrar splash screen inmediatamente
                 setTimeout(function() {
-                    showVideoIntro();
-                }, 500);
+                    var splashScreen = document.getElementById('splashScreen');
+                    splashScreen.style.display = 'flex';
+                    
+                    // Después de 3 segundos, ocultar splash y mostrar video
+                    setTimeout(function() {
+                        splashScreen.classList.add('hidden');
+                        setTimeout(function() {
+                            showVideoIntro();
+                        }, 500);
+                    }, 3000);
+                }, 100);
                 
                 return false;
             } else {
@@ -3003,38 +3237,103 @@
             opciones: {
                 'cueva-total': {
                     estructura: [
-                        { codigo: '45661', cantidad: 3259.99, precio: 3.68, total: 11996.76 },
-                        { codigo: '04-002', cantidad: 780.00, precio: 3.68, total: 2870.40 },
-                        { codigo: '4.03', cantidad: 3659.79, precio: 3.68, total: 13468.03 },
-                        { codigo: '4.04', cantidad: 3795.00, precio: 3.68, total: 13965.60 },
-                        { codigo: '04.01', cantidad: 160.57, precio: 155.00, total: 24888.35 },
-                        { codigo: '04.02', cantidad: 321.14, precio: 175.00, total: 56199.50 }
+                        { codigo: '04.01', cantidad: 3259.99, precio: 3.68, total: 11980.46 },
+                        { codigo: '04.02', cantidad: 780.00, precio: 3.68, total: 2866.50 },
+                        { codigo: '04.03', cantidad: 3659.79, precio: 3.68, total: 13449.73 },
+                        { codigo: '04.04', cantidad: 3795.00, precio: 3.68, total: 13946.63 },
+                        { codigo: '04.05', cantidad: 160.57, precio: 165.00, total: 26494.05 },
+                        { codigo: '04.06', cantidad: 321.14, precio: 185.00, total: 59410.90 },
+                        { codigo: '04.07', cantidad: 6.00, precio: 689.93, total: 4139.58 },
+                        { codigo: '04.08', cantidad: 16.00, precio: 325.00, total: 5200.00 }
                     ],
-                    subtotalEstructura: 123388.64,
-                    totalUnidad: 330832.93
+                    subtotalEstructura: 137487.85,
+                    totalUnidad: 301393.69
                 },
                 'placa-alveolar': {
                     estructura: [
-                        { codigo: '45661', cantidad: 5259.99, precio: 3.68, total: 19356.76 },
-                        { codigo: '04-002', cantidad: 980.00, precio: 3.68, total: 3606.40 },
-                        { codigo: '4.03', cantidad: 4659.79, precio: 3.68, total: 17148.03 },
-                        { codigo: '4.04', cantidad: 4795.00, precio: 3.68, total: 17645.60 },
-                        { codigo: '04.05', cantidad: 530.71, precio: 97.55, total: 51770.76 },
-                        { codigo: '5.01', cantidad: 2800.00, precio: 1.88, total: 5264.00 }
+                        { codigo: '04.01', cantidad: 5259.99, precio: 3.68, total: 19356.76 },
+                        { codigo: '04.02', cantidad: 980.00, precio: 3.68, total: 3606.40 },
+                        { codigo: '04.03', cantidad: 4659.79, precio: 3.68, total: 17148.03 },
+                        { codigo: '04.04', cantidad: 4795.00, precio: 3.68, total: 17645.60 },
+                        { codigo: '04.05', cantidad: 530.71, precio: 97.55, total: 51769.70 },
+                        { codigo: '05.02', cantidad: 2800.00, precio: 1.88, total: 5264.00 },
+                        { codigo: '04.07', cantidad: 6.00, precio: 689.93, total: 4139.58 },
+                        { codigo: '04.08', cantidad: 16.00, precio: 325.00, total: 5200.00 }
                     ],
-                    subtotalEstructura: 114791.55,
-                    totalUnidad: 322235.84
+                    subtotalEstructura: 124051.60,
+                    totalUnidad: 287957.44
                 }
             },
             cerramientos: [
-                { cantidad: 842.24, precio: 145.00, total: 122124.80 },
+                { cantidad: 842.24, precio: 165.00, total: 138969.60 },
                 { cantidad: 9327.00, precio: 1.65, total: 15389.55 },
                 { cantidad: 126.00, precio: 36.03, total: 4539.15 },
-                { cantidad: 842.24, precio: 5.95, total: 5007.54 },
-                { cantidad: 247.95, precio: 135.00, total: 33473.25 },
-                { cantidad: 234.00, precio: 115.00, total: 26910.00 }
+                { cantidad: 842.24, precio: 5.95, total: 5007.54 }
             ],
-            subtotalCerramientos: 207444.29
+            subtotalCerramientos: 163905.84,
+            opcionales: [
+                {
+                    codigo: '08.01',
+                    titulo: 'SOLADO DE HORMIGÓN REUTILIZABLE, TERMINACIÓN RAYADA + HUECOS DRENAJE',
+                    descripcion: 'Solado prefabricado y reutilizable de 14 cm de canto total, realizado con placas EDRO INFRAESTRUCTURA macizas de hormigón armado de 14 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm). El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero no incluye la capa de hormigón de limpieza ni cimentación.',
+                    cantidad: 247.95,
+                    unidad: 'm²',
+                    precio: 115.00,
+                    total: 28514.25,
+                    selected: false
+                },
+                {
+                    codigo: '08.10',
+                    titulo: 'VALLADO PERIMETRAL ELEMENTOS PREFABRICADOS 120MM',
+                    descripcion: 'Vallado formado por paneles Valla EDRO prefabricados de hormigón armado de 12, de espesor, de ancho estándar (3m o 1,5m) o personalizado de dimensiones derivadas de las estándar, con altura libre de planta de hasta Xm, unidos entre sí mediante placas de unión metálicas ocultas atornilladas, empotre o vaina de conexión.',
+                    cantidad: 234.00,
+                    unidad: 'm²',
+                    precio: 125.00,
+                    total: 29250.00,
+                    selected: false
+                },
+                {
+                    codigo: '08.11',
+                    titulo: 'VIGA TIPO PÉRGOLA DE HORMIGÓN PREFABRICADO DE COLOR BLANCO - Frente Forjados',
+                    descripcion: 'Medidas: Sección 10 x 60 cm. Largo máximo 6 m. Reforzadas. Decorativas. Aplicación en frente de forjados.',
+                    cantidad: 147.60,
+                    unidad: 'm²',
+                    precio: 350.00,
+                    total: 51660.00,
+                    selected: false
+                },
+                {
+                    codigo: '08.12',
+                    titulo: 'VIGA TIPO PÉRGOLA DE HORMIGÓN PREFABRICADO DE COLOR BLANCO - Piscina',
+                    descripcion: 'Medidas: Sección 10 x 60 cm. Largo máximo 6 m. Reforzadas. Decorativas. Muro de Piscina Incluido.',
+                    cantidad: 186.00,
+                    unidad: 'm²',
+                    precio: 350.00,
+                    total: 65100.00,
+                    selected: false
+                },
+                {
+                    codigo: '08.13',
+                    titulo: 'VIGA TIPO PÉRGOLA DE ESTRUCTURA DE ACERO REVESTIDA EN CHAPA - Frente Forjados',
+                    descripcion: 'Medidas: Sección 10 x 60 cm. Largo máximo 6 m. Reforzadas. Decorativas. Estructura de acero revestida en chapa de color blanco. Aplicación en frente de forjados.',
+                    cantidad: 147.60,
+                    unidad: 'm²',
+                    precio: 250.00,
+                    total: 36900.00,
+                    selected: false
+                },
+                {
+                    codigo: '08.14',
+                    titulo: 'VIGA TIPO PÉRGOLA DE ESTRUCTURA DE ACERO REVESTIDA EN CHAPA - Piscina',
+                    descripcion: 'Medidas: Sección 10 x 60 cm. Largo máximo 6 m. Reforzadas. Decorativas. Estructura de acero revestida en chapa de color blanco. Muro de Piscina Incluido.',
+                    cantidad: 186.00,
+                    unidad: 'm²',
+                    precio: 250.00,
+                    total: 46500.00,
+                    selected: false
+                }
+            ],
+            opcionalesSeleccionados: []
         };
 
         var selectedComparison = 'tradicional';
@@ -3077,6 +3376,18 @@
                     titulo: 'FORJADO REUTILIZABLE UNIDIRECCIONAL MIXTO DE HORMIGÓN ARMADO',
                     descripcion: 'Forjado unidireccional prefabricado y reutilizable de 30 cm de canto, realizado con una capa de placas EDRO aligerada de hormigón armado de 30 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm) unidas entre sí mediante placas de unión hembra S355 en perfil plano de medidas estándar (400x400mm, 400x200mm, 200x200mm) y espesor 10 mm colocadas en ambas caras de la placa EDRO y conectadas mediante placa de unión hembra en cara superior de placa EDRO y placa de unión macho de acero S355 soldada, con pernos pasantes de alta resistencia de 24mm de mm de diámetro y 320mm de longitud total, atornillados con arandela, tuerca y par de apriete controlado de 800N, apoyada directamente sobre pilares o muros de carga. El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero incluye las vigas y los pilares.',
                     unidad: 'm²'
+                },
+                {
+                    codigo: '04.07',
+                    titulo: 'TRAMO DE ESCALERA PREFABRICADO DE HORMIGÓN ARMADO',
+                    descripcion: 'Tramo de escalera prefabricado de hormigón armado, fck=35 N/mm², con escalones de 28 cm x 17 cm como máximo, y superficie superior acabado liso GRIS.',
+                    unidad: 'm²'
+                },
+                {
+                    codigo: '04.08',
+                    titulo: 'ESCALERA VOLADA ANCLADA A PARED DE HORMIGÓN ARMADO',
+                    descripcion: 'Escalera volada anclada a pared con peldaños de hormigón armado, sin estructuras visibles. Ancho 60-100 cm, huella 22-28 cm de 10 cm de espesor. Anclaje a pared mediante placa de anclaje empotrada (Albañilería no incluida) y peldaño soldado sobre la misma. Acabado Gris o blanco mate. Baranda con poste Ø42 mm y 5 varillas Ø12 mm, pasamanos metálico.',
+                    unidad: 'm²'
                 }
             ],
             'placa-alveolar': [
@@ -3115,6 +3426,18 @@
                     titulo: 'CUANTÍA DE ACERO CORRUGADO CAPA DE COMPRESIÓN',
                     descripcion: 'Acero UNE-EN 10080 B 500 SD para armado de refuerzo en capa de compresión de forjados alveolares.',
                     unidad: 'KG'
+                },
+                {
+                    codigo: '04.07',
+                    titulo: 'TRAMO DE ESCALERA PREFABRICADO DE HORMIGÓN ARMADO',
+                    descripcion: 'Tramo de escalera prefabricado de hormigón armado, fck=35 N/mm², con escalones de 28 cm x 17 cm como máximo, y superficie superior acabado liso GRIS.',
+                    unidad: 'm²'
+                },
+                {
+                    codigo: '04.08',
+                    titulo: 'ESCALERA VOLADA ANCLADA A PARED DE HORMIGÓN ARMADO',
+                    descripcion: 'Escalera volada anclada a pared con peldaños de hormigón armado, sin estructuras visibles. Ancho 60-100 cm, huella 22-28 cm de 10 cm de espesor. Anclaje a pared mediante placa de anclaje empotrada (Albañilería no incluida) y peldaño soldado sobre la misma. Acabado Gris o blanco mate. Baranda con poste Ø42 mm y 5 varillas Ø12 mm, pasamanos metálico.',
+                    unidad: 'm²'
                 }
             ]
         };
@@ -3182,13 +3505,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Secuencia: SPLASH (3s) → LOGIN → (después de login) VIDEO
-            // Mostrar splash primero (ya visible por defecto)
-            setTimeout(function() {
-                // Ocultar splash después de 3 segundos
-                document.getElementById('splashScreen').classList.add('hidden');
-                // El login ya está visible debajo, no necesitamos hacer nada más
-            }, 3000);
+            // NO ejecutar automáticamente el splash - solo se ejecuta después del login
             
             var today = new Date().toLocaleDateString('es-ES');
             document.getElementById('currentDate').textContent = today;
@@ -3203,6 +3520,7 @@
             actualizarTablaEstructura();
             actualizarTotales();
             calcularMetricasEconomicas();
+            renderOpcionales();
         });
 
         function setupNavigation() {
@@ -3398,19 +3716,104 @@
             var totalUnidad = opcionActual.totalUnidad;
             var totalProyecto = totalUnidad * unidades;
 
+            // Calcular total de opcionales
+            var totalOpcionales = 0;
+            presupuestoData.opcionales.forEach(function(opcional) {
+                if (opcional.selected) {
+                    totalOpcionales += opcional.total;
+                }
+            });
+
             document.getElementById('totalUnidad').textContent = formatCurrency(totalUnidad);
             document.getElementById('totalProyecto').textContent = formatCurrency(totalProyecto);
             document.getElementById('stat-unidades').textContent = unidades;
-            document.getElementById('stat-inversion').textContent = formatCurrency(totalProyecto, false);
+            
+            // Actualizar inversión total con opcionales
+            var inversionTotal = totalProyecto + totalOpcionales;
+            document.getElementById('stat-inversion').textContent = formatCurrency(inversionTotal, false);
 
             document.getElementById('price-cueva-total').textContent = formatCurrency(presupuestoData.opciones['cueva-total'].totalUnidad);
             document.getElementById('price-placa-alveolar').textContent = formatCurrency(presupuestoData.opciones['placa-alveolar'].totalUnidad);
+
+            // Actualizar opcionales en UI si existen los elementos
+            if (document.getElementById('totalOpcionales')) {
+                document.getElementById('totalOpcionales').textContent = formatCurrency(totalOpcionales);
+            }
+            if (document.getElementById('totalBase')) {
+                document.getElementById('totalBase').textContent = formatCurrency(totalProyecto);
+            }
+            if (document.getElementById('totalFinal')) {
+                document.getElementById('totalFinal').textContent = formatCurrency(totalProyecto + totalOpcionales);
+            }
+            if (document.getElementById('numOpcionalesSeleccionados')) {
+                var numSeleccionados = presupuestoData.opcionales.filter(function(o) { return o.selected; }).length;
+                document.getElementById('numOpcionalesSeleccionados').textContent = numSeleccionados + ' partida' + (numSeleccionados !== 1 ? 's' : '') + ' seleccionada' + (numSeleccionados !== 1 ? 's' : '');
+            }
 
             calcularMetricasEconomicas();
 
             if (document.getElementById('impacto-section').classList.contains('active')) {
                 calcularImpacto();
             }
+        }
+
+        // ==================== FUNCIONES OPCIONALES ====================
+        function renderOpcionales() {
+            var container = document.getElementById('opcionales-list');
+            if (!container) return;
+            
+            container.innerHTML = '';
+
+            presupuestoData.opcionales.forEach(function(opcional, index) {
+                var div = document.createElement('div');
+                div.className = 'opcional-item' + (opcional.selected ? ' selected' : '');
+                
+                div.innerHTML = `
+                    <div class="opcional-checkbox-wrapper" onclick="toggleOpcional(${index})">
+                        <div class="opcional-checkbox">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="opcional-info">
+                            <div class="opcional-header-row">
+                                <div>
+                                    <div class="opcional-title">${opcional.titulo}</div>
+                                    <div class="opcional-codigo">${opcional.codigo}</div>
+                                </div>
+                                <div class="opcional-precio">
+                                    <div class="opcional-precio-total">${formatCurrency(opcional.total)}</div>
+                                    <div class="opcional-precio-unitario">${formatNumber(opcional.cantidad)} ${opcional.unidad} × ${formatCurrency(opcional.precio)}</div>
+                                </div>
+                            </div>
+                            <div class="opcional-descripcion">${opcional.descripcion}</div>
+                            <div class="opcional-metrics">
+                                <div class="opcional-metric">
+                                    <i class="fas fa-ruler-combined" style="color: var(--cueva-electric);"></i>
+                                    <span>Cantidad: <strong>${formatNumber(opcional.cantidad)} ${opcional.unidad}</strong></span>
+                                </div>
+                                <div class="opcional-metric">
+                                    <i class="fas fa-euro-sign" style="color: var(--cueva-amber);"></i>
+                                    <span>Precio Unitario: <strong>${formatCurrency(opcional.precio)}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        function toggleOpcional(index) {
+            presupuestoData.opcionales[index].selected = !presupuestoData.opcionales[index].selected;
+            renderOpcionales();
+            actualizarTotales();
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('es-ES', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(num);
         }
 
         function calcularMetricasEconomicas() {
@@ -3586,16 +3989,13 @@
             }
         });
 
-        // Skip splash screen on click - solo oculta el splash, no muestra video
+        // Skip splash screen on click
         document.getElementById('splashScreen').addEventListener('click', function() {
             this.classList.add('hidden');
-            // No mostrar video aquí - el video solo se muestra después del login
+            setTimeout(function() {
+VideoIntro();
+            }, 500);
         });
-
-        console.log('🏠 CUEVA - Sistema Universal de Construcción');
-        console.log('📋 Presupuesto Interactivo Definitivo - Proyecto Torrelodones');
-        console.log('🎯 Newarco + Pentavep + CUEVA');
-        console.log('🎬 Con video intro y galería completa');
     </script>
 </body>
 </html>
