@@ -2600,7 +2600,7 @@
                     <div class="impact-card-header">
                         <i class="fas fa-euro-sign impact-icon text-green"></i>
                         <div class="impact-value">
-                            <p class="number" id="impact-costo">86.000</p>
+                            <p class="number" id="impact-costo">56.000</p>
                             <p class="unit">€ ahorro</p>
                         </div>
                     </div>
@@ -2723,7 +2723,7 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <div>
-                        <h3>Análisis Financiero para Promotoras</h3>
+                        <h3>Análisis Financiero Orientativo para Promotoras</h3>
                         <p style="font-size: 0.875rem; color: var(--gray-300);">Ventajas económicas Sistema CUEVA Universal</p>
                     </div>
                 </div>
@@ -2798,12 +2798,12 @@
                     <div class="tech-card-icon" style="background: var(--cueva-coral);">
                         <i class="fas fa-microchip"></i>
                     </div>
-                    <h3>Cualquier Tecnología</h3>
+                    <h3>Total Integración Tecnologica</h3>
                     <p>Absorbe y potencia la tecnología</p>
                     <ul class="tech-features">
                         <li><i class="fas fa-check icon"></i> IA avanzada integrada</li>
                         <li><i class="fas fa-check icon"></i> IoT completo</li>
-                        <li><i class="fas fa-check icon"></i> Blockchain certificado</li>
+                        <li><i class="fas fa-check icon"></i> Certificación en tiempo Real</li>
                     </ul>
                 </div>
             </div>
@@ -2997,18 +2997,6 @@
 
                     <div class="download-item">
                         <div class="download-info">
-                            <i class="fas fa-chart-line download-icon" style="color: #EAB308;"></i>
-                            <div class="download-details">
-                                <h4>Análisis Comparativo</h4>
-                                <p>Comparación detallada de ambas opciones constructivas</p>
-                                <p class="meta">CUEVA Total vs CUEVA + Alveolar • Ventajas • ROI</p>
-                            </div>
-                        </div>
-                        <button class="btn-download" onclick="exportarComparativo()">Generar</button>
-                    </div>
-
-                    <div class="download-item">
-                        <div class="download-info">
                             <i class="fas fa-book download-icon" style="color: #7C3AED;"></i>
                             <div class="download-details">
                                 <h4>Catálogo Técnico EDRO V10</h4>
@@ -3071,7 +3059,7 @@
                         </div>
                         <div class="contact-item-text">
                             <h4>Email Corporativo</h4>
-                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80ecf5e9f3ede7e1f2e3e9e1c0e5e4f2eff3f9f3f4e5edf3aee3efed">[email&#160;protected]</a></p>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80ecf5e9f3ede7e1f2e3e9e1c0e5e4f2eff3f9f3f4e5edf3aee3efed">luismgarcia@edrosystems.com</a></p>
                             <p style="color: var(--gray-500);">Respuesta en menos de 24h</p>
                         </div>
                     </div>
@@ -3109,7 +3097,7 @@
                         </div>
                         <div class="contact-item-text">
                             <h4>Email</h4>
-                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea7a0a8a18ebeaba0baafb8abbee0ada1a3">[email&#160;protected]</a></p>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea7a0a8a18ebeaba0baafb8abbee0ada1a3">info@pentavep.com</a></p>
                             <p style="color: var(--gray-500);">Ejecución del proyecto</p>
                         </div>
                     </div>
@@ -3272,26 +3260,6 @@
             ],
             subtotalCerramientos: 163905.84,
             opcionales: [
-                {
-                    codigo: '08.01',
-                    titulo: 'SOLADO DE HORMIGÓN REUTILIZABLE, TERMINACIÓN RAYADA + HUECOS DRENAJE',
-                    descripcion: 'Solado prefabricado y reutilizable de 14 cm de canto total, realizado con placas EDRO INFRAESTRUCTURA macizas de hormigón armado de 14 cm de canto y dimensiones estándar o derivadas de la estándar (750x300cm,600x300cm, 450x300cm, 300x300cm, 300x150cm, 150x150cm). El precio incluye el conformado de elementos en taller industrial con medidas estándar y el montaje en el lugar definitivo de su colocación en obra, pero no incluye la capa de hormigón de limpieza ni cimentación.',
-                    cantidad: 247.95,
-                    unidad: 'm²',
-                    precio: 115.00,
-                    total: 28514.25,
-                    selected: false
-                },
-                {
-                    codigo: '08.10',
-                    titulo: 'VALLADO PERIMETRAL ELEMENTOS PREFABRICADOS 120MM',
-                    descripcion: 'Vallado formado por paneles Valla EDRO prefabricados de hormigón armado de 12, de espesor, de ancho estándar (3m o 1,5m) o personalizado de dimensiones derivadas de las estándar, con altura libre de planta de hasta Xm, unidos entre sí mediante placas de unión metálicas ocultas atornilladas, empotre o vaina de conexión.',
-                    cantidad: 234.00,
-                    unidad: 'm²',
-                    precio: 125.00,
-                    total: 29250.00,
-                    selected: false
-                },
                 {
                     codigo: '08.11',
                     titulo: 'VIGA TIPO PÉRGOLA DE HORMIGÓN PREFABRICADO DE COLOR BLANCO - Frente Forjados',
@@ -3716,38 +3684,45 @@
             var totalUnidad = opcionActual.totalUnidad;
             var totalProyecto = totalUnidad * unidades;
 
-            // Calcular total de opcionales
-            var totalOpcionales = 0;
+            // Calcular total de opcionales POR UNIDAD
+            var totalOpcionalesPorUnidad = 0;
             presupuestoData.opcionales.forEach(function(opcional) {
                 if (opcional.selected) {
-                    totalOpcionales += opcional.total;
+                    totalOpcionalesPorUnidad += opcional.total;
                 }
             });
+            
+            // Multiplicar opcionales por número de unidades SOLO para el total final
+            var totalOpcionalesProyecto = totalOpcionalesPorUnidad * unidades;
 
             document.getElementById('totalUnidad').textContent = formatCurrency(totalUnidad);
             document.getElementById('totalProyecto').textContent = formatCurrency(totalProyecto);
             document.getElementById('stat-unidades').textContent = unidades;
             
-            // Actualizar inversión total con opcionales
-            var inversionTotal = totalProyecto + totalOpcionales;
+            // Actualizar inversión total con opcionales multiplicados por unidades
+            var inversionTotal = totalProyecto + totalOpcionalesProyecto;
             document.getElementById('stat-inversion').textContent = formatCurrency(inversionTotal, false);
 
             document.getElementById('price-cueva-total').textContent = formatCurrency(presupuestoData.opciones['cueva-total'].totalUnidad);
             document.getElementById('price-placa-alveolar').textContent = formatCurrency(presupuestoData.opciones['placa-alveolar'].totalUnidad);
 
-            // Actualizar opcionales en UI si existen los elementos
+            // Actualizar opcionales en UI - MOSTRAR POR UNIDAD en ambos lugares
             if (document.getElementById('totalOpcionales')) {
-                document.getElementById('totalOpcionales').textContent = formatCurrency(totalOpcionales);
+                document.getElementById('totalOpcionales').textContent = formatCurrency(totalOpcionalesPorUnidad);
             }
             if (document.getElementById('totalBase')) {
                 document.getElementById('totalBase').textContent = formatCurrency(totalProyecto);
             }
             if (document.getElementById('totalFinal')) {
-                document.getElementById('totalFinal').textContent = formatCurrency(totalProyecto + totalOpcionales);
+                document.getElementById('totalFinal').textContent = formatCurrency(totalProyecto + totalOpcionalesProyecto);
             }
             if (document.getElementById('numOpcionalesSeleccionados')) {
                 var numSeleccionados = presupuestoData.opcionales.filter(function(o) { return o.selected; }).length;
                 document.getElementById('numOpcionalesSeleccionados').textContent = numSeleccionados + ' partida' + (numSeleccionados !== 1 ? 's' : '') + ' seleccionada' + (numSeleccionados !== 1 ? 's' : '');
+            }
+            // IMPORTANTE: Actualizar también el resumen de opcionales (tarjeta inferior)
+            if (document.getElementById('totalOpcionalesResumen')) {
+                document.getElementById('totalOpcionalesResumen').textContent = formatCurrency(totalOpcionalesPorUnidad);
             }
 
             calcularMetricasEconomicas();
@@ -3864,7 +3839,8 @@
         }
 
         function descargarPresupuesto() {
-            mostrarNotificacion('Generando PDF del presupuesto ' + presupuestoData.opcionActiva + '...', 'teal');
+            // Descargar siempre el Presupuesto CUEVA Total
+            descargarPresupuestoEspecifico('cueva-total');
         }
 
         function descargarPresupuestoEspecifico(opcion) {
@@ -3993,7 +3969,7 @@
         document.getElementById('splashScreen').addEventListener('click', function() {
             this.classList.add('hidden');
             setTimeout(function() {
-VideoIntro();
+                showVideoIntro();
             }, 500);
         });
     </script>
