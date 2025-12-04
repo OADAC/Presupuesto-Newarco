@@ -2354,7 +2354,7 @@
                     <div class="summary-card-content">
                         <div class="summary-text">
                             <h4>Plazo Estimado</h4>
-                            <p class="amount text-green">3-4 meses</p>
+                            <p class="amount text-green">4-5 meses</p>
                             <p class="subtitle">vs 12 meses tradicional</p>
                         </div>
                         <div class="summary-icon icon-green">
@@ -3059,7 +3059,7 @@
                         </div>
                         <div class="contact-item-text">
                             <h4>Email Corporativo</h4>
-                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80ecf5e9f3ede7e1f2e3e9e1c0e5e4f2eff3f9f3f4e5edf3aee3efed">luismgarcia@edrosystems.com</a></p>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80ecf5e9f3ede7e1f2e3e9e1c0e5e4f2eff3f9f3f4e5edf3aee3efed">[email&#160;protected]</a></p>
                             <p style="color: var(--gray-500);">Respuesta en menos de 24h</p>
                         </div>
                     </div>
@@ -3089,7 +3089,7 @@
                 </div>
 
                 <div class="contact-card">
-                    <h3><i class="fas fa-hard-hat" style="color: var(--cueva-coral); margin-right: 0.5rem;"></i> Pentavep - Partner Constructora</h3>
+                    <h3><i class="fas fa-hard-hat" style="color: var(--cueva-coral); margin-right: 0.5rem;"></i> PentaVEP - Partner Constructora</h3>
                     
                     <div class="contact-item">
                         <div class="contact-item-icon bg-teal">
@@ -3097,7 +3097,7 @@
                         </div>
                         <div class="contact-item-text">
                             <h4>Email</h4>
-                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea7a0a8a18ebeaba0baafb8abbee0ada1a3">info@pentavep.com</a></p>
+                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea7a0a8a18ebeaba0baafb8abbee0ada1a3">[email&#160;protected]</a></p>
                             <p style="color: var(--gray-500);">Ejecución del proyecto</p>
                         </div>
                     </div>
@@ -3720,9 +3720,9 @@
                 var numSeleccionados = presupuestoData.opcionales.filter(function(o) { return o.selected; }).length;
                 document.getElementById('numOpcionalesSeleccionados').textContent = numSeleccionados + ' partida' + (numSeleccionados !== 1 ? 's' : '') + ' seleccionada' + (numSeleccionados !== 1 ? 's' : '');
             }
-            // IMPORTANTE: Actualizar también el resumen de opcionales (tarjeta inferior)
+            // IMPORTANTE: Actualizar también el resumen de opcionales (tarjeta inferior) - MULTIPLICADO POR UNIDADES
             if (document.getElementById('totalOpcionalesResumen')) {
-                document.getElementById('totalOpcionalesResumen').textContent = formatCurrency(totalOpcionalesPorUnidad);
+                document.getElementById('totalOpcionalesResumen').textContent = formatCurrency(totalOpcionalesProyecto);
             }
 
             calcularMetricasEconomicas();
